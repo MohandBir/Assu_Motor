@@ -1,0 +1,37 @@
+<div class="position-relative " 
+     style="min-height: 120px;">  <!-- min-height au lieu de height fixe -->
+     
+    <!-- Image de fond -->
+    <img src="{{ asset('image/header2.jpeg') }}" 
+         class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" 
+         style="object-position: 10% 40%;"
+         alt="">
+
+    <!-- Overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50"></div>
+
+    <!-- Contenu -->
+    <div class="position-relative d-flex align-items-center py-3 py-md-4">
+
+        <!-- Logo : tailles différentes selon l'écran -->
+        <img src="{{ asset('image/logo.png') }}" 
+             class="ms-3 ms-md-4"
+             style="height: clamp(90px, 12vw, 160px);"
+             alt="AssuMotor">
+
+        <!-- Texte centré dans l'espace restant -->
+        <div class="text-white text-center flex-grow-1 px-2">
+            <h1 class=" fw-bold text-blue text-shadow-lg mb-1
+                       display-4"
+                       >
+                AssuMotor<span class="text-warning">.fr</span>
+            </h1>
+            <div class="divider-accent d-none d-sm-block"></div>
+            <p class="text-logo  fw-semibold text-shadow mb-0
+                      d-none d-md-block ">
+                L'assurance qui vous va, en quelques clics
+            </p>
+        </div>
+
+    </div>
+</div>
