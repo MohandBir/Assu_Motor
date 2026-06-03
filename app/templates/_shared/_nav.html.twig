@@ -7,33 +7,30 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
+      <ul class="navbar-nav me-auto mx-auto">
+        <li class="nav-item mx-1">
           <a class="nav-link " href="#">Home
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item mx-1">
           <a class="nav-link" href="#">Devis</a>
         </li>
         {% if app.user %}
-        <li class="nav-item">
+        <li class="nav-item mx-1">
           <a class="nav-link" href="#">Déconnexion</a>
         </li>
         {% else %}
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown mx-1">
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
             aria-expanded="false">Connexion</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
+            <a class="dropdown-item" href="#">Connexion</a>
+            <a class="dropdown-item" href="#">Enregistrement</a>
           </div>
         </li>
         {% endif %}
-        <li class="nav-item">
+        <li class="nav-item mx-1">
           <a class="nav-link" href="#">Apropos</a>
         </li>
       </ul>
