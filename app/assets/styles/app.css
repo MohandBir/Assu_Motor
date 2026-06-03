@@ -2,7 +2,4 @@
 @import '_nav.css';
 @import '_footer.css';
 @import 'bootswatch.css';
-
-body {
-
-}
+@import '_general.css';

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+<div class="mt-3">
+    <h1>Enregistement</h1>
+
+    {{ form_start(registrationForm) }}
+
+        {{ form_label(registrationForm.fname) }}
+        {{ form_widget(registrationForm.fname, {
+            'attr': {
+                'class': 'form-control ' ~ (registrationForm.fname.vars.errors|length > 0 ? 'border border-danger' : ''),
+                'autofocus': 'true',
+            }
+        }) }}
+        <div class="text-danger">
+            {{form_errors(registrationForm.fname)}}
+        </div>
+
+        {{ form_label(registrationForm.lname) }}
+        {{ form_widget(registrationForm.lname, {
+            'attr': {
+                'class': 'form-control ' ~ (registrationForm.lname.vars.errors|length > 0 ? 'border border-danger' : ''),
+            }
+        }) }}
+        <div class="text-danger">
+            {{form_errors(registrationForm.lname)}}
+        </div>
+        
+        {{ form_label(registrationForm.email) }}
+        {{ form_widget(registrationForm.email, {
+            'attr': {
+                'class': 'form-control ' ~ (registrationForm.email.vars.errors|length > 0 ? 'border border-danger' : ''),
+            }
+        }) }}
+        <div class="text-danger">
+            {{form_errors(registrationForm.email)}}
+        </div>
+
+        {{ form_label(registrationForm.plainPassword) }}
+        {{ form_widget(registrationForm.plainPassword, {
+            'attr': {
+                'class': 'form-control ' ~ (registrationForm.plainPassword.vars.errors|length > 0 ? 'border border-danger' : '')
+            }
+        }) }}
+        <div class="text-danger">
+            {{form_errors(registrationForm.plainPassword)}}
+        </div>
+
+        <button type="submit" class="btn btn-blue mt-3">Register</button>
+    {{ form_end(registrationForm) }}
+</div>
+{% endblock %}
