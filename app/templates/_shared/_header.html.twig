@@ -14,10 +14,13 @@
     <div class="position-relative d-flex align-items-center py-3 py-md-4">
 
         <!-- Logo : tailles différentes selon l'écran -->
-        <img src="{{ asset('image/logo.png') }}" 
-             class="ms-3 ms-md-4"
-             style="height: clamp(90px, 12vw, 160px);"
-             alt="AssuMotor">
+        <a href="{{path('app_home')}}">
+            <img src="{{ asset('image/logo3.png') }}" 
+                 class="ms-3 ms-md-4"
+                 {# style="height: clamp(90px, 12vw, 160px);" #}
+                 style="height: clamp(65px, 9vw, 130px);"
+                 alt="AssuMotor">
+        </a>
 
         <!-- Texte centré dans l'espace restant -->
         <div class="text-white text-center flex-grow-1 px-2">
