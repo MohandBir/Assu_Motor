@@ -36,3 +36,7 @@
 .bg-logo {
     background: #00295D; /* ton fond personnalisé */
 }
+
+.bg-title {
+    -webkit-text-stroke: 0.5px #dedee0;    
+} 

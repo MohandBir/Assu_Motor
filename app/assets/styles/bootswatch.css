@@ -8899,6 +8899,41 @@ textarea.form-control-lg {
   background-color: rgba(var(--bs-bleu-rgb), var(--bs-bg-opacity)) !important;
 }
 
+.bg-gray1 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-100), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray2 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-200), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray3 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-300), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray4 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-400), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray5 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-500), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray6 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-600), var(--bs-bg-opacity)) !important;
+}
+
+.bg-gray7 {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-gray-700), var(--bs-bg-opacity)) !important;
+}
+
 
 /* fin Mes Couleurs de font personnalisée */
 
