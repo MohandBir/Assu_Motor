@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello QuoteController!{% endblock %}
+
+{% block body %}
+<form action="{{path('vehicle_by_plate')}}" method="get">
+    <input type="text" name="plate" id="plate" class="form-control">
+    <input type="submit" value="Valider" class="btn btn-blue">
+</form>
+{% endblock %}
