@@ -3,8 +3,12 @@
 {% block title %}Hello QuoteController!{% endblock %}
 
 {% block body %}
-<form action="{{path('vehicle_by_plate')}}" method="get">
-    <input type="text" name="plate" id="plate" class="form-control">
-    <input type="submit" value="Valider" class="btn btn-blue">
-</form>
+
+<h1>Simuler votre devis</h1>
+{{ form_start(form) }}
+    
+    {{ form_row(form.licenseYear) }}
+    {{ form_row(form.status) }}
+    <input type="submit" value="Valider">
+{{ form_end(form) }}
 {% endblock %}

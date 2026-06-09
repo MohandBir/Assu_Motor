@@ -17,21 +17,11 @@ class QuoteType extends AbstractType
     {
         $builder
             ->add('duration')
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('expiredAt', null, [
-                'widget' => 'single_text',
-            ])
             ->add('status')
             ->add('licenseYear')
             ->add('birthDate')
             ->add('estimatedPrice')
             ->add('BonusMalus')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
             ->add('formula', EntityType::class, [
                 'class' => Formula::class,
                 'choice_label' => 'id',

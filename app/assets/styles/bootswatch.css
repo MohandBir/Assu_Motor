@@ -12291,7 +12291,7 @@ textarea.form-control-lg {
 
 .btn-group-vertical .btn + .btn:hover {
   margin-top: -1px;
-  border-top-width: 1px;
+  border-top-width: 1zpx;
 }
 .btn-group-vertical .btn + .btn:active {
   margin-top: -1px;
