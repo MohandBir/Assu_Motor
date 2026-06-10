@@ -4,11 +4,35 @@
 
 {% block body %}
 
-<h1>Simuler votre devis</h1>
-{{ form_start(form) }}
-    
-    {{ form_row(form.licenseYear) }}
-    {{ form_row(form.status) }}
-    <input type="submit" value="Valider">
+<h1 class="text-center my-4">Simuler votre devis</h1>
+{{ form_start(form , { 
+    'attr': {
+        'class': 'd-flex flex-column',
+        'data-turbo': 'false',
+    } 
+})}}
+    <h3 class="my-3">Section assurance</h3>
+    <div class="bg-gray3 p-3">
+        {{form_row(form.formula)}}
+        {{form_row(form.duration)}}
+    </div> 
+
+    <h3 class="my-3">Section demandeur</h3>
+    <div class="bg-gray3 p-3">
+        {{form_row(form.licenseYear)}}
+        {{form_row(form.birthDate)}}
+    </div> 
+
+    <h3 class="my-3">Section Voiture</h3> 
+    <div class="bg-gray3 p-3">
+        {{form_row(form.vehicle.type)}}
+        {{form_row(form.vehicle.brand)}}
+        {{form_row(form.vehicle.model)}}
+        {{form_row(form.vehicle.vehicleYear)}}
+        {{ form_row(form.vehicle.licensePlate) }}
+    </div> 
+    {{ form_errors(form) }}
+    <input type="submit" value="Valider" class="text-center mt-4 mb-5 btn btn-blue text-logo w-50 mx-auto">
+
 {{ form_end(form) }}
 {% endblock %}

@@ -46,8 +46,8 @@ class Quote
     #[ORM\JoinColumn(nullable: false)]
     private ?Formula $formula = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['persist'])]
+    #[ORM\JoinColumn(nullable: false)] // terget entity : vehicle class => se fait automatiquement par symfony
     private ?Vehicle $vehicle = null;
 
     public function getId(): ?int
