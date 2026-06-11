@@ -22,6 +22,15 @@ class QuoteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('formula', EntityType::class, [
+                'class' => Formula::class,
+                'choice_label' => 'name',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner une formule',
+                    ]),
+                ]
+            ])
             ->add('duration', ChoiceType::class, [
                 'label' => 'Durée d\'assurance',
                 'choices' => [
@@ -30,25 +39,38 @@ class QuoteType extends AbstractType
                     '3 mois' => '3',
                     '6 mois' => '6',
                     '1 ans' => '12',
+                ],
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner une durée',
+                    ]),
+                    new Choice([
+                        'choices' =>  ['1', '2', '3', '6', '12'],
+                        'message' => 'veuilles insérez une durée valide',
+                    ])
                 ]
-            ])
+            ]) 
             ->add('licenseYear', ChoiceType::class, [
                 'label' => 'Année de permis',
                 'choices' => array_combine(
                     range(date('Y'), '1944'),
                     range(date('Y'), '1944')
                 ),
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner une Année valide',
+                    ]),
+                    new Choice([
+                        'choices' => range(date('Y'), '1944'),
+                        ])
+                    ],
             ])
             ->add('birthDate', DateType::class, [
                 'label' => 'Date de naissance',
-            ])
-            ->add('formula', EntityType::class, [
-                'class' => Formula::class,
-                'choice_label' => 'name',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'veuilles sellectionner une formule',
-                    ])
+                        'message' => 'veuilles insérez une date valide',
+                    ]),
                 ]
             ])
             ->add('vehicle', VehicleType::class, [

@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
 class VehicleType extends AbstractType 
@@ -48,24 +50,50 @@ class VehicleType extends AbstractType
                     }
                     return [];
                 },
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner un Type',
+                    ]),
+                    new Choice([
+                        'choices' => ['car', 'moto', 'truck',],
+                    ])
+                ] 
             ])
             ->add('brand' , ChoiceType::class, [
                 'label' => 'Marque',
                 'choices' => $brandChoices,
-                'placeholder' => 'Choisissez la marque'
+                'placeholder' => 'Choisissez la marque',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner une marque',
+                    ]),
+                ]
             ])
             ->add('model' , ChoiceType::class, [
                 'label' => 'Model',
                 'choices' => $modelChoices,
-                'placeholder' => 'Choisissez la model'
+                'placeholder' => 'Choisissez la model',
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner un model',
+                    ]),
+                ]
             ])
             ->add('vehicleYear', ChoiceType::class,[
                 'label' => 'Année',
                 'choices' => array_combine(
                     range(date('Y'), '1990'),
                     range(date('Y'), '1990')
-                    )
-                ])    
+                ),
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'veuilles sellectionner une Année valide',
+                    ]),
+                    new Choice([
+                        'choices' => range(date('Y'), '1944'),
+                    ])
+                ],
+            ])    
             ->add('licensePlate', TextType::class, [
                 'label' => 'Immatriculation',
                 'label_attr' => [

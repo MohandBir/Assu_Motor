@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 class Quote
 {
+   // Const PENDING = 'pending';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
