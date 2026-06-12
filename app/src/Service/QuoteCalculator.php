@@ -25,7 +25,7 @@ class QuoteCalculator
         $durationCoef = $this->getDurationCoef($quote->getDuration());
         $bonusMalusCoef = $this->getBonusMalusCoef($quote->getBonusMalus());
 
-        $estimatedPrice = $basePrice * $seniorityCoef * $ageCoef  * $durationCoef * $bonusMalusCoef;
+        $estimatedPrice = $basePrice * $seniorityCoef * $vehicleValueCoef * $ageCoef  * $durationCoef * $bonusMalusCoef;
 
         return $estimatedPrice;
 
@@ -68,7 +68,7 @@ class QuoteCalculator
 
         $decotePct = min( (0.25 + $vehicleAge * 0.10), 0.8);
         $currentValue = $purchasePrice * (1 - $decotePct);
-        dd($currentValue);
+
         if ($currentValue < 10000 ) return 1;
         if ($currentValue >= 10000 && $currentValue < 25000) return 1.20;
         if ($currentValue >= 25000 && $currentValue < 50000) return 1.50;
