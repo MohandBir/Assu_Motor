@@ -28,6 +28,9 @@ class Model
     #[ORM\OneToMany(targetEntity: VehicleReference::class, mappedBy: 'model', orphanRemoval: true)]
     private Collection $vehicleReferences;
 
+    #[ORM\Column]
+    private ?int $purchasePrice = null;
+
     public function __construct()
     {
         $this->vehicleReferences = new ArrayCollection();
@@ -88,6 +91,18 @@ class Model
                 $vehicleReference->setModel(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPurchasePrice(): ?int
+    {
+        return $this->purchasePrice;
+    }
+
+    public function setPurchasePrice(int $purchasePrice): static
+    {
+        $this->purchasePrice = $purchasePrice;
 
         return $this;
     }
