@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Quote;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,20 +17,20 @@ class QuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Quote::class);
     }
 
-    //    /**
-    //     * @return Quote[] Returns an array of Quote objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('q')
-    //            ->andWhere('q.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('q.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+
+       public function findWithVehicleAndFormula(User $user): array
+       {
+           return $this->createQueryBuilder('q')
+               ->leftJoin('q.vehicle', 'v')
+               ->addSelect('v')
+               ->leftJoin('q.formula', 'f')
+               ->addSelect('f')
+               ->where("q.user = :user")
+               ->setParameter('user', $user)
+               ->getQuery()
+               ->getResult()
+           ;
+       }
 
     //    public function findOneBySomeField($value): ?Quote
     //    {

@@ -1,8 +1,7 @@
-<nav class="navbar navbar-expand-lg bg-blue" data-bs-theme="dark">
+<nav class="navbar navbar-expand-md bg-blue" data-bs-theme="dark">
   <div class="container-fluid">
     <a href="{{path('app_home')}}">
-      <img src="{{ asset('image/logo2.png') }}" class="" style="max-height: 40px;"
-      alt="AssuMotor">
+      <img src="{{ asset('image/logo2.png') }}" class="" style="max-height: 40px;" alt="AssuMotor">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
       aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,35 +10,41 @@
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav me-auto mx-auto">
         <li class="nav-item mx-1">
-          <a class="nav-link " href="#">Accueil
+          <a class="nav-link " href="{{path('app_home')}}">Accueil
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
         <li class="nav-item mx-1">
-          <a class="nav-link " href="#">Devis</a>
+          <a class="nav-link " href="{{path('app_quote')}}">Devis</a>
         </li>
-        {% if app.user %}
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="{{path('app_logout')}}">Déconnexion</a>
-        </li>
-        {% else %}
-        <li class="nav-item dropdown mx-1">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
-            aria-expanded="false">Connexion</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{path('app_login')}}">Connexion</a>
-            <a class="dropdown-item" href="{{path('app_register')}}">Enregistrement</a>
-          </div>
-        </li>
-        {% endif %}
         <li class="nav-item mx-1">
           <a class="nav-link" href="#">Apropos</a>
         </li>
+        <li class="nav-item mx-1">
+          <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
+        </li>
       </ul>
-      <form class="d-flex">
-        <input class="form-control me-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      {# Espace perso #}
+      <ul class="navbar-nav me-0 ">
+        <li class="nav-item dropdown mx-1 ">
+          <a class="nav-link dropdown-toggle " data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+          aria-expanded="false">
+          <img src="{{ asset('image/profil.png') }}" class="" style="max-height: 24px;" alt="AssuMotor">
+          </a>
+          <div class="dropdown-menu dropdown-menu-end bg-gray5">
+            {% if app.user %}
+            <a class="dropdown-item text-blue" href="#">Profil</a>
+            <a class="dropdown-item text-blue" href="{{ path('app_account_quote') }}">Devis</a>
+            <a class="dropdown-item text-blue" href="#">Demandes Souscription</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-blue" href="{{path('app_logout')}}">Déconnexion</a>
+            {% else %}
+            <a class="dropdown-item text-blue" href="{{path('app_login')}}">Connexion</a>
+            <a class="dropdown-item text-blue" href="{{path('app_register')}}">Enregistrement</a>
+            {% endif %}
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>

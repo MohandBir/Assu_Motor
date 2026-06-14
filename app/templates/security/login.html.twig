@@ -21,10 +21,12 @@
         <label for="password">Mot de passe</label>
         <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
         <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-
-        <button class="btn btn-lg btn-blue text-logo mt-3" type="submit">
-            Connexion
-        </button>
+        <div class="d-flex flex-colomn flex-sm-row justify-content-between">
+            <button class="btn btn-lg btn-blue text-logo mt-3" type="submit">
+                Connexion
+            </button>
+            <a class="text-blue pt-2 fs-5" href="{{path('app_register')}}">Créer un compte</a>
+        </div>
     </form>
 </div>
 {% endblock %}
