@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Estimated Price{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center my-4">Resultat de Simulation</h1>
+
+{% if quote is defined %}
+<div class="my-4">
+    <h3> Récapitulatif</h3>
+</div>
+<div class="border border-2 border-blue p-2 mb-4 mx-3 mx-sm-0">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Vehicule : </th>
+                <th scope="col">{{ quote.vehicle.Brand ~ ' | ' ~ quote.vehicle.model ~ ' | ' ~
+                    quote.vehicle.vehicleYear }} </th>
+
+            </tr>
+        </thead>
+        <tbody class="tab">
+            <tr class="bg-gray1">
+                <th scope="row">Formule selectionnée</th>
+                <td>{{ quote.formula.name }}</td>
+
+            </tr>
+            <tr class="bg-gray1">
+                <th scope="row">Durée d'assurance</th>
+                <td>{{ quote.duration !== 12 ? quote.duration ~ ' mois': '1 an' }}   {{ quote.duration == 3 ? ' (reduction: 5%)' : (quote.duration == 6 ? '(reduction: 10%)' : (quote.duration == 12 ? '(reduction: 20%)' : ''))}} </td>
+
+            </tr>
+            <tr class="bg-gray1">
+                <th scope="row">Année de permis</th>
+                <td>{{ quote.licenseYear }}</td>
+
+            </tr>
+            <tr class="bg-gray1">
+                <th scope="row">Date de naissance</th>
+                <td>{{quote.birthDate | date('d-m-Y') }} </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
+    <div class="">
+        <h3 class="d-inline fw-semibold"> Prix total estimé : <span class="bg-gray3">{{ quote.estimatedPrice }} €</span></h3>
+        <p class="fs-5">soit <span class="bg-gray3">{{ quote.estimatedPrice / quote.duration  }} €/mois</span> </p>
+    </div>
+    <div class="align-self-cente">
+        <a href="{{ path('app_quote') }}" class="text-center btn btn-blue mb-2 text-logo  mx-auto">Modifier</a>
+    </div>
+    {% if app.user %}
+        <div class="align-self-cente">
+            <a href="{{ path('app_quote_save') }}" class="text-center btn btn-blue text-logo mx-auto">Sauvegarder</a>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

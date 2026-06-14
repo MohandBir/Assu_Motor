@@ -62,7 +62,6 @@ class QuoteCalculator
         if ($formula !== 'Tous risques') {
             return 1;
         }
-
         $currentYear = date('Y');
         $vehicleAge = $currentYear - $vehicleYear;
 
@@ -78,7 +77,10 @@ class QuoteCalculator
 
     private function getDurationCoef(int $duration) 
     {
-        return (int) $duration;
+        if ($duration == 1 || $duration == 2) return 1;
+        if ($duration == 3) return 0.95;
+        if ($duration == 6) return 0.90;
+        if ($duration == 12) return 0.80;
     }
 
     private function getBonusMalusCoef(float $bonusMalus): float 
