@@ -13,7 +13,7 @@ final class AccountController extends AbstractController
     public function quote(QuoteRepository $quoteRepo): Response
     {    
         if (!$this->isGranted('ROLE_USER')) {
-            dd('hi');
+            return $this->redirectToRoute('app_login');
         }
         $quotes = $quoteRepo->findWithVehicleAndFormula($this->getUser());
 

@@ -20,9 +20,17 @@
         <li class="nav-item mx-1">
           <a class="nav-link" href="#">Apropos</a>
         </li>
+        {% if app.user %}
+        <li class="nav-item mx-1">
+          <form action="{{path('app_logout')}}" method="post">
+            <input type="submit" class="nav-link" value="Déconnexion">
+          </form>
+        </li>
+        {% else %}
         <li class="nav-item mx-1">
           <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
         </li>
+        {% endif %}
       </ul>
       {# Espace perso #}
       <ul class="navbar-nav me-0 ">
@@ -37,7 +45,9 @@
             <a class="dropdown-item text-blue" href="{{ path('app_account_quote') }}">Devis</a>
             <a class="dropdown-item text-blue" href="#">Demandes Souscription</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item text-blue" href="{{path('app_logout')}}">Déconnexion</a>
+            <form action="{{path('app_logout')}}" method="post">
+              <input type="submit" class="dropdown-item text-blue" value="Déconnexion">
+            </form>
             {% else %}
             <a class="dropdown-item text-blue" href="{{path('app_login')}}">Connexion</a>
             <a class="dropdown-item text-blue" href="{{path('app_register')}}">Enregistrement</a>

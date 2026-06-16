@@ -21,16 +21,13 @@
                 <th scope="row">{{ quote.vehicle.model ~'/'~ quote.vehicle.vehicleyear}}</th>
                 <td>{{ quote.createdAt|date('d-m-Y') }}</td>
                 <td>{{ quote.EstimatedPrice / quote.duration }} €/mois</td>
-                <td>supprimer | modifier</td>
+                <td>
+                    <a href="{{ path('app_quote_delete', {id: quote.id})}}">supprimer</a> 
+                    <a href="{{ path('app_quote', {id: quote.id})}}">modifier</a>   
+                </td>
             </tr>                
             {% endfor %}
 
-            <tr class="table-secondary">
-                <th scope="row">Secondary</th>
-                <td>Column content</td>
-                <td>Column content</td>
-                <td>Column content</td>
-            </tr>
            
         </tbody>
     </table>

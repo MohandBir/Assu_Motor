@@ -13,8 +13,10 @@ class QuoteCalculator
     public function __construct(
         private ModelRepository $modelRepo,  
     ) {}
-    public function getPrice(Quote $quote, int $basePrice)
+    
+    public function getPrice(Quote $quote)
     {
+        $basePrice = $quote->getFormula()->getbasePrice();
         $vehicleYear = $quote->getVehicle()->getVehicleYear();
         $formula = $quote->getFormula()->getName();
         $model = $this->modelRepo->findOneBy(['name' => $quote->getVehicle()->getModel()]);
