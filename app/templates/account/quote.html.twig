@@ -3,6 +3,16 @@
 {% block title %}Mon espace{% endblock %}
 
 {% block body %}
+{# affichage des messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-{{label}}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p class="text-center mb-0"> {{message}}</p>
+    </div>
+    {% endfor %}
+{% endfor %}
+
 <div>
     <h1 class="text-center my-4">Mes devis</h1>
 
@@ -10,7 +20,7 @@
         <thead>
             <tr>
                 <th scope="col">Vehicule</th>
-                <th scope="col">Création</th>
+                <th scope="col"><div class="d-none d-sm-block">Création</div></th>
                 <th scope="col">Estimation</th>
                 <th scope="col">Action</th>
             </tr>
@@ -18,12 +28,51 @@
         <tbody>
             {% for quote in quotes %}
             <tr>
-                <th scope="row">{{ quote.vehicle.model ~'/'~ quote.vehicle.vehicleyear}}</th>
-                <td>{{ quote.createdAt|date('d-m-Y') }}</td>
-                <td>{{ quote.EstimatedPrice / quote.duration }} €/mois</td>
+                <th scope="row">
+                    <a href="{{ path('app_quote_showResult', {id: quote.id}) }}" 
+                        class="text-decoration-none text-body">
+                    {{ quote.vehicle.model ~' / '~ quote.vehicle.vehicleyear}}
+                    </a>
+                </th>
                 <td>
-                    <a href="{{ path('app_quote_delete', {id: quote.id})}}">supprimer</a> 
-                    <a href="{{ path('app_quote', {id: quote.id})}}">modifier</a>   
+                    <div class="d-none d-sm-block">{{ quote.createdAt|date('d-m-Y') }}</div>
+                </td>
+                <td>{{ quote.EstimatedPrice / quote.duration }} €/mois</td>
+                <td class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
+                    <form action="{{ path('app_quote', {id: quote.id})}}" method="get">
+                        <input type="submit" class="btn btn-sm btn-outline-success" value="modifier">
+                    </form> 
+                    <button  class="btn btn-sm btn-outline-danger"
+                             data-bs-toggle="modal" 
+                             data-bs-target="#deleteModal-{{ quote.id }}">
+                        supprimer
+                    </button>
+                    <div class="modal fade" id="deleteModal-{{ quote.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">Suppression</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+
+                                <div class="modal-body text-start">
+                                    Êtes-vous sûr de vouloir supprimer ce Devis ?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <form action="{{ path('app_quote_delete', {id: quote.id}) }}" method="post">
+                                        <input type="hidden" name="token"
+                                            value="{{ csrf_token('delete-quote' ~ quote.id) }}">
+                                        <button class="btn btn-blue">​Supprimer</button>
+                                    </form>
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </tr>                
             {% endfor %}

@@ -31,7 +31,6 @@ final class QuoteController extends AbstractController
         if ($user) {
             $quote = $savedQuote ?? null;
         } else {
-            dd('dd');
             $quote = $session->get('quote');
             // Réattacher les entités liées à Doctrine
             $this->quoteManager->reatacheFormula($quote);
@@ -70,59 +69,33 @@ final class QuoteController extends AbstractController
     #[Route('/quote/result/{id}', name: 'app_quote_showResult', requirements: ['id' => '\d+'], defaults: ['id' => null])]
     public function showResult(?Quote $savedQuote, Request $request): Response
     {
-        if ($this->getUser()) {
-        
-        }
         $session = $request->getSession();
         $quote = $session->get('quote');
 
         return $this->render('quote/result.html.twig', [
             'quote' => $this->getUser() ? $savedQuote : $quote,
-            'isUpdated' => $savedQuote ? true : false,
+            //'isUpdated' => $savedQuote ? true : false,
         ]);
-    }
-
-    #[Route('/quote/save/{id}', name: 'app_quote_save', requirements: ['id' => '\d+'], defaults: ['id' => null])]
-    public function save(?Quote $savedQuote, Request $request, VehicleRepository $vehicleRepository): Response
-    {
-        $user = $this->getUser();
-        $session = $request->getSession();                     
-        $quote = $session->get('quote');
-
-        if ($savedQuote) {
-            $vehicle = $vehicleRepository->find(($quote->getVehicle()->getId()));
-            //dd($quote);
-            $savedQuote = $this->quoteManager->reatacheFormula($quote);
-            $savedQuote = $this->quoteManager->rebuildFromSession($savedQuote, $quote, $vehicle, $user);
-            $this->em->persist($savedQuote);
-            $this->addFlash('success', 'Votre devis a bien été modifié.');
-           // dd($quote);
-        } else {
-            $quote->setUser($user);
-            $quote = $this->quoteManager->reatacheFormula($quote);
-            $this->em->persist($quote);
-            $this->addFlash('success', 'Votre devis a bien été enregistré.');
-           // dd($quote);
-        }
-
-        //dd($savedQuote);
-
-        $this->em->flush();
-        $session->clear();
-   
-        return $this->redirectToRoute('app_account_quote');
     }
     
     #[Route('/quote/delete/{id}', name: 'app_quote_delete', requirements: ['id' => '\d+'], defaults: ['id' => null])]
-    public function delete(?Quote $savedQuote, Request $request): Response
+    public function delete(?Quote $quote, Request $request): Response
     {
-        if ($this->getUser() && $savedQuote) {
-            $this->em->remove($savedQuote);
-            $this->em->flush();
-        }
-        
-        return $this->redirectToRoute('app_account_quote', [
+        if ($this->getUser()) {
+            $submittedToken = $request->getPayload()->get('token'); 
+            if ($quote && $this->isCsrfTokenValid('delete-quote' . $quote->getId(), $submittedToken)) {
+                $this->em->remove($quote);
+                $this->em->flush();
+                $this->addFlash('success', 'Le devis a été supprimé avec succès.');
 
-        ]);
+                return $this->redirectToRoute('app_account_quote');
+            } else {
+                $this->addFlash('danger', 'Opération non autorisée ');
+
+                return $this->redirectToRoute('app_home');
+            }
+        }
+
+        return $this->redirectToRoute('app_login');
     }
 }
