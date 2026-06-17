@@ -1,6 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello QuoteController!{% endblock %}
+       
+{% block javascripts %}
+        {% block importmap %}
+        {{ parent() }}
+        {{ importmap('quoteForm') }}
+        {% endblock %}
+    {% endblock %}
 
 {% block body %}
 

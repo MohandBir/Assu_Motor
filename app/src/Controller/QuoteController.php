@@ -3,17 +3,24 @@
 namespace App\Controller;
 
 use App\Entity\Formula;
+use App\Entity\Model;
 use App\Entity\Quote;
 use App\Form\QuoteType;
+use App\Repository\BrandRepository;
+use App\Repository\ModelRepository;
 use App\Repository\QuoteRepository;
+use App\Repository\VehicleReferenceRepository;
 use App\Repository\VehicleRepository;
 use App\Service\QuoteCalculator;
 use App\Service\QuoteManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+
+use function PHPUnit\Framework\objectEquals;
 
 final class QuoteController extends AbstractController 
 {
@@ -97,5 +104,31 @@ final class QuoteController extends AbstractController
         }
 
         return $this->redirectToRoute('app_login');
+    }
+    
+    #[Route('/quote/brand/{brandName}', name: 'app_quote_getModelAjax')]
+    public function getModelAjax(string $brandName, ModelRepository $modelRepo, BrandRepository $brandRepo): JsonResponse
+    {   
+        $brand = $brandRepo->findOneBy(['name' => $brandName]);
+        $objectsModels = $modelRepo->findBy(['brand' => $brand]);
+        $models = [];
+        foreach ($objectsModels as $model) {
+            $models[] = $model->getName();
+        }
+        
+        return new JsonResponse($models);
+    }
+    
+    #[Route('/quote/model/{modelName}', name: 'app_quote_getYearAjax')]
+    public function getYearAjax(string $modelName, VehicleReferenceRepository $referenceRepo, ModelRepository $modelRepo): JsonResponse
+    {   
+        $model = $modelRepo->findOneBy(['name' => $modelName]);
+        $objectsReferences = $referenceRepo->findBy(['model' => $model]);
+        $years = [];
+        foreach ($objectsReferences as $reference) {
+            $years[] = $reference->getYear();
+        }
+        
+        return new JsonResponse($years);
     }
 }

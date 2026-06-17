@@ -81,6 +81,7 @@ class VehicleType extends AbstractType
             ])
             ->add('vehicleYear', ChoiceType::class,[
                 'label' => 'Année',
+                'placeholder' => 'Choisissez une année',
                 'choices' => array_combine(
                     range(date('Y'), '1990'),
                     range(date('Y'), '1990')
