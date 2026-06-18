@@ -16,28 +16,23 @@ class VehicleReferenceRepository extends ServiceEntityRepository
         parent::__construct($registry, VehicleReference::class);
     }
 
-    //    /**
-    //     * @return VehicleReference[] Returns an array of VehicleReference objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('v.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+       public function findWithModelAndBrand(string $vehicleYear, string $brand, string $model): ?VehicleReference
+       {
+           return $this->createQueryBuilder('v')
+               ->leftJoin('v.model', 'm')
+               ->addSelect('m')
+               ->leftJoin('m.brand', 'b')
+               ->addSelect('b')
+               ->where('v.year = :vehicleYear')
+               ->setParameter('vehicleYear', $vehicleYear)
+               ->andWhere('m.name = :model')
+               ->setParameter('model', $model)
+               ->andWhere('b.name = :brand')
+               ->setParameter('brand', $brand)
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
 
-    //    public function findOneBySomeField($value): ?VehicleReference
-    //    {
-    //        return $this->createQueryBuilder('v')
-    //            ->andWhere('v.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+
 }

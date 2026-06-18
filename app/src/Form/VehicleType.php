@@ -91,7 +91,7 @@ class VehicleType extends AbstractType
                         'message' => 'veuilles sellectionner une Année valide',
                     ]),
                     new Choice([
-                        'choices' => range(date('Y'), '1944'),
+                        'choices' => range(date('Y'), '1990'),
                     ])
                 ],
             ])    

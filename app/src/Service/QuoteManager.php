@@ -7,6 +7,7 @@ use App\Entity\Quote;
 use App\Entity\User;
 use App\Entity\Vehicle;
 use App\Repository\ModelRepository;
+use App\Repository\VehicleReferenceRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -15,6 +16,7 @@ class QuoteManager
 {
     public function __construct(
         private ModelRepository $modelRepo,  
+        private VehicleReferenceRepository $referenceRepo,  
         private EntityManagerInterface $em,
     ) {}
 
@@ -26,6 +28,22 @@ class QuoteManager
     public function setSessionQuote(SessionInterface $session, Quote $quote): void
     {
         $session->set('quote', $quote);
+    }
+
+    public function isValidVehicle(Quote $quote)
+    {
+        $brand = $quote->getVehicle()->getBrand();
+        $model = $quote->getVehicle()->getModel();
+        $vehicleYear = $quote->getVehicle()->getVehicleYear();
+
+        $vehicleReference = $this->referenceRepo->findWithModelAndBrand($vehicleYear, $brand, $model);
+        
+        
+        if (!$vehicleReference) {
+           return false;
+        }
+
+        return true;
     }
 
     public function completeFormDataQuote(Quote $quote): Quote

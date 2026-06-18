@@ -2,15 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Formula;
-use App\Entity\Model;
 use App\Entity\Quote;
 use App\Form\QuoteType;
 use App\Repository\BrandRepository;
 use App\Repository\ModelRepository;
-use App\Repository\QuoteRepository;
 use App\Repository\VehicleReferenceRepository;
-use App\Repository\VehicleRepository;
 use App\Service\QuoteCalculator;
 use App\Service\QuoteManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-use function PHPUnit\Framework\objectEquals;
 
 final class QuoteController extends AbstractController 
 {
@@ -47,8 +42,12 @@ final class QuoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $quote = $form->getData();
+            if (!$this->quoteManager->isValidVehicle($quote)) {
+                $this->addFlash('danger', 'Combinaison marque/modèle/année invalide.');
+                
+                return $this->redirectToRoute('app_quote');
+            }
             $quote = $this->quoteManager->completeFormDataQuote($quote);
             $estimatedPrice = $this->calculator->getPrice($quote);
             $quote->setEstimatedPrice($estimatedPrice * $quote->getDuration());
