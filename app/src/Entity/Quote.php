@@ -52,6 +52,9 @@ class Quote
     #[ORM\JoinColumn(nullable: false)] // terget entity : vehicle class => se fait automatiquement par symfony
     private ?Vehicle $vehicle = null;
 
+    #[ORM\OneToOne(mappedBy: 'quote', cascade: ['persist', 'remove'])]
+    private ?Subscription $subscription = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -185,6 +188,23 @@ class Quote
     public function setVehicle(?Vehicle $vehicle): static
     {
         $this->vehicle = $vehicle;
+
+        return $this;
+    }
+
+    public function getSubscription(): ?Subscription
+    {
+        return $this->subscription;
+    }
+
+    public function setSubscription(Subscription $subscription): static
+    {
+        // set the owning side of the relation if necessary
+        if ($subscription->getQuote() !== $this) {
+            $subscription->setQuote($this);
+        }
+
+        $this->subscription = $subscription;
 
         return $this;
     }
