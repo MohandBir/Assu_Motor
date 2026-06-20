@@ -53,9 +53,10 @@ final class QuoteController extends AbstractController
             $quote->setEstimatedPrice($estimatedPrice * $quote->getDuration());
 
             if($user) {
+                $message = $savedQuote ? 'modifié' : 'sauvegardé'; 
                 $quote->setUser($user);
                 $this->em->persist($quote);
-                $this->addFlash('success', 'Votre devis a bien été enregistré');
+                $this->addFlash('success', "Votre devis a bien été $message" );
                 $this->em->flush();
             } else {
                 $session->set('quote', $quote);
@@ -67,9 +68,8 @@ final class QuoteController extends AbstractController
             ]);
         } 
 
-        return $this->render('quote/index.html.twig', [
+        return $this->render('quote/new.html.twig', [
             'form' => $form->createView(),
-            'issem' => 'billal',
         ]);
     }
 

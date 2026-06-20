@@ -10,6 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SubscriptionRepository::class)]
 class Subscription
 {
+    const PENDING_DOCUMENTS = 'pending documents';
+    const PENDING_REVIEW = 'pending review';
+    const VALIDATED = 'validated';
+    const REJECTED = 'rejected';
+    const CANCELLED = 'cancelled';
+    const EXPIRED = 'expired';
+
+    const TRANSLATED_STATUS = [
+        self::PENDING_DOCUMENTS => 'En attente de documents',
+        self::PENDING_REVIEW => 'En attente d\'examen',
+        self::VALIDATED => 'Validée',
+        self::REJECTED => 'Refusée',
+        self::CANCELLED => 'Annulée',
+        self::EXPIRED => 'expirée',
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -74,6 +90,12 @@ class Subscription
 
         return $this;
     }
+
+    public function setTranslatedStatus()
+    {
+        return self::TRANSLATED_STATUS[$this->status];
+    }
+
 
     public function getSubmitedAt(): ?\DateTimeImmutable
     {

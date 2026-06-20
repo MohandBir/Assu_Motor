@@ -56,8 +56,8 @@
 </div>
 
 <div class="d-flex flex-column flex-sm-row  mb-2">
-    <h3 class="d-inline fw-semibold"> Prix total estimé : <span class="bg-gray3">{{ quote.estimatedPrice }} €</span></h3>
-    <p class="fs-5 ms-4">soit <span class="bg-gray3">{{ quote.estimatedPrice / quote.duration  }} €/mois</span> </p>
+    <h3 class="d-inline fw-semibold"> Prix total estimé : <span class="bg-gray3 px-1">{{ quote.estimatedPrice }} €</span></h3>
+    <p class="fs-5 ms-4">soit <span class="bg-gray3 px-1">{{ quote.estimatedPrice / quote.duration  }} €/mois</span> </p>
 </div>
 
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
@@ -74,7 +74,9 @@
         <a  href="{{ path('app_account_quote') }}" class="text-center btn btn-outline-blue mx-auto">Mes devis</a>  
     </div>
     <div class="text-center">
-        <a  href="#" class="text-center btn btn-outline-blue mx-auto">Souscrire </a>  
+        <form action="{{ path('app_subscription_new', {id: quote.id})}}" method="get">
+            <button type="submit" class="text-center btn btn-outline-blue mx-auto">Souscrire</button>
+        </form> 
     </div>
     {% endif %}
 </div>

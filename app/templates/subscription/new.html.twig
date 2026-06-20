@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Souscription{% endblock %}
+
+{% block body %}
+{# affichage des messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-{{label}}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p class="text-center mb-0"> {{message}}</p>
+    </div>
+    {% endfor %}
+{% endfor %}
+
+<h1 class="text-center my-4">Ajouter Les documents</h1>
+{{ form_start(form , { 
+    'attr': {
+        'data-turbo': 'false',
+    } 
+})}}
+    {{form_row(form.documents)}}
+    {{form_row(form.grayCard)}}
+    <div class="d-flex flex-column flex-sm-row gap-3 my-3 my-sm-2 my-md-3 my-lg-4">
+
+        <input type="submit" value="Valider les documents" class="text-center btn btn-blue text-logo w-100 text-wrap text-sm-nowrap">
+        <input type="submit" value="Sauvegarder et quitter" class="text-center btn btn-outline-blue w-100 text-wrap text-sm-nowrap">
+    </div>
+
+{{ form_end(form) }}
+{% endblock %}
