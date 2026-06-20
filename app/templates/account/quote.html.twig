@@ -28,25 +28,38 @@
         <tbody>
             {% for quote in quotes %}
             <tr>
-                <th scope="row">
-                    <a href="{{ path('app_quote_showResult', {id: quote.id}) }}" 
-                        class="text-decoration-none text-body">
-                    {{ quote.vehicle.model ~' / '~ quote.vehicle.vehicleyear}}
+                <th scope="row" class>
+                   <a   href="{{ path('app_quote_showResult', {id: quote.id}) }}" 
+                        class="text-decoration-none text-body ">
+                        {{ quote.vehicle.model ~' / '~ quote.vehicle.vehicleyear}}
                     </a>
                 </th>
                 <td>
                     <div class="d-none d-sm-block">{{ quote.createdAt|date('d-m-Y') }}</div>
                 </td>
                 <td>{{ quote.EstimatedPrice / quote.duration }} €/mois</td>
-                <td class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
-                    <form action="{{ path('app_quote', {id: quote.id})}}" method="get">
-                        <input type="submit" class="btn btn-sm btn-outline-success" value="modifier">
-                    </form> 
-                    <button  class="btn btn-sm btn-outline-danger"
-                             data-bs-toggle="modal" 
-                             data-bs-target="#deleteModal-{{ quote.id }}">
-                        supprimer
-                    </button>
+                <td class="">
+                    <div class="d-flex flex-column flex-md-row gap-sm-2">
+                        <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
+                            <form action="{{ path('app_quote_showResult', {id: quote.id}) }}" method="get">
+                                <button type="submit" class="btn btn-sm btn-outline-blue" style="min-width: 89px;;">voir</button>
+                            </form> 
+                            <form action="{{ path('app_quote', {id: quote.id})}}" method="get">
+                                <button type="submit" class="btn btn-sm btn-outline-blue" style="min-width: 89px;">Modifier</button>
+                            </form>
+                        </div>
+                        <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
+                            <form action="" method="get">
+                                <button type="submit" class="btn btn-sm btn-outline-success">Souscrire</button>
+                            </form> 
+                            <button  class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal-{{ quote.id }}"
+                                style="max-width:min-content">
+                                supprimer
+                            </button> 
+                        </div>
+                    </div>
                     <div class="modal fade" id="deleteModal-{{ quote.id }}" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -64,7 +77,7 @@
                                     <form action="{{ path('app_quote_delete', {id: quote.id}) }}" method="post">
                                         <input type="hidden" name="token"
                                             value="{{ csrf_token('delete-quote' ~ quote.id) }}">
-                                        <button class="btn btn-blue">​Supprimer</button>
+                                        <button class="btn btn-blue">Supprimer</button>
                                     </form>
                                     <button class="btn btn-secondary" data-bs-dismiss="modal">
                                         Annuler

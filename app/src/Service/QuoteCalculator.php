@@ -64,6 +64,7 @@ class QuoteCalculator
         if ($formula !== 'Tous risques') {
             return 1;
         }
+        
         $currentYear = date('Y');
         $vehicleAge = $currentYear - $vehicleYear;
 
