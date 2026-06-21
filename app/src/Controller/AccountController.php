@@ -17,7 +17,7 @@ final class AccountController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
         $quotes = $quoteRepo->findWithVehicleAndFormula($this->getUser());
-
+    
         return $this->render('account/quote.html.twig', [
             'quotes' => $quotes,
         ]);
@@ -29,9 +29,9 @@ final class AccountController extends AbstractController
         if (!$this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_login');
         }
-        $subscriptions = $subscriptionRepo->findAll();
-
-        return $this->render('account/quote.html.twig', [
+        $subscriptions = $subscriptionRepo->findAllOrdredBySubmittedAt();
+        //dd($subscriptions[0]->getTranslatedStatus());
+        return $this->render('account/subscription.html.twig', [
             'subscriptions' => $subscriptions,
         ]);
     }

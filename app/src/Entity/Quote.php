@@ -9,7 +9,15 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: QuoteRepository::class)]
 class Quote
 {
-   // Const PENDING = 'pending';
+    const PENDING = 'Pending';
+    const SUBSCRIBED = 'Subscribed';
+    const EXPIRED = 'Expired';
+
+    const TRANSLATED_STATUS = [
+        self::PENDING => 'Non souscrit',
+        self::SUBSCRIBED => 'Souscrit',
+        self::EXPIRED => 'Expiré',
+    ];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -106,6 +114,11 @@ class Quote
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getTranslatedStatus()
+    {
+        return self::TRANSLATED_STATUS[$this->status];
     }
 
     public function getLicenseYear(): ?int

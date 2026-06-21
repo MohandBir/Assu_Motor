@@ -25,8 +25,11 @@ class QuoteRepository extends ServiceEntityRepository
                ->addSelect('v')
                ->leftJoin('q.formula', 'f')
                ->addSelect('f')
+               ->leftJoin('q.subscription', 's')
+               ->addSelect('s')
                ->where("q.user = :user")
                ->setParameter('user', $user)
+               ->addOrderBy('q.createdAt', 'DESC')
                ->getQuery()
                ->getResult()
            ;

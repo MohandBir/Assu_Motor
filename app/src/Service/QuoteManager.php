@@ -50,7 +50,7 @@ class QuoteManager
     {
         $quote
             ->setBonusMalus(1)
-            ->setStatus('pending')
+            ->setStatus(Quote::PENDING)
             ->setCreatedAt(new DateTimeImmutable('now'))
             ->setExpiredAt(new DateTimeImmutable('+1 month'))
         ;

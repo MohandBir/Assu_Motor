@@ -14,7 +14,7 @@
 {% endfor %}
 
 <div>
-    <h1 class="text-center my-4">Mes Demandes de souscriptions</h1>
+    <h1 class="text-center my-4">Mes demandes de souscriptions</h1>
 
     <table class="table table-hover">
         <thead>
@@ -26,55 +26,56 @@
             </tr>
         </thead>
         <tbody>
-            {% for quote in quotes %}
+            {% for subscription in subscriptions %}
             <tr>
                 <th scope="row" class>
-                   <a   href="{{ path('app_quote_showResult', {id: quote.id}) }}" 
-                        class="text-decoration-none text-body ">
-                        {{ quote.vehicle.model ~' / '~ quote.vehicle.vehicleyear}}
-                    </a>
+                    {{ subscription.referenceNumber }}
                 </th>
                 <td>
-                    <div class="d-none d-sm-block">{{ quote.createdAt|date('d-m-Y') }}</div>
+                    <div class="d-none d-sm-block">{{ subscription.submittedAt|date('d-m-Y') }}</div>
                 </td>
-                <td>{{ quote.EstimatedPrice / quote.duration }} €/mois</td>
+                <td>{{ subscription.translatedStatus }}</td>
                 <td class="">
-                    <div class="d-flex flex-column flex-md-row gap-sm-2">
-                        <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
-                            <button  class="btn btn-sm btn-outline-danger"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal-{{ quote.id }}"
-                                style="max-width:min-content">
-                                Annuler
-                            </button> 
+                    {% if subscription.status != 'cancelled' %}
+                        <div class="d-flex flex-column flex-md-row gap-sm-2">
+                            <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
+                                <button  class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#deleteModal-{{ subscription.id }}"
+                                    style="max-width:min-content">
+                                    Annuler
+                                </button> 
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal fade" id="deleteModal-{{ quote.id }}" tabindex="-1">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
+                        <div class="modal fade" id="deleteModal-{{ subscription.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
 
-                                <div class="modal-header">
-                                    <h5 class="modal-title text-warning">Annulation</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-warning">Annulation</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
 
-                                <div class="modal-body text-start">
-                                    Êtes-vous sûr de vouloir Annuler cette demande ?
-                                </div>
-
-                                <div class="modal-footer">
-                                    <form action="{{ path('app_quote_delete', {id: quote.id}) }}" method="post">
-                                        <input type="hidden" name="token"
-                                            value="{{ csrf_token('delete-quote' ~ quote.id) }}">
-                                        <button class="btn btn-blue">Supprimer</button>
-                                    </form>
-                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
-                                        Annuler
-                                    </button>
+                                    <div class="modal-body text-start">
+                                        Êtes-vous sûr de vouloir Annuler cette demande de souscription ?
+                                    </div>
+                                                    
+                                    <div class="modal-footer">
+                                        <form action="{{ path('app_subscription_cancel', {id: subscription.id}) }}" method="post">
+                                            <input type="hidden" name="token"
+                                                value="{{ csrf_token('cancel-subscription' ~ subscription.id) }}">
+                                            <button class="btn btn-blue">Confirmer</button>
+                                        </form>
+                                        <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Annuler
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% else %}
+                        <span class="btn btn-sm btn-outline-danger disabled ">Annuler</span>
+                    {% endif %}
                 </td>
             </tr>                
             {% endfor %}

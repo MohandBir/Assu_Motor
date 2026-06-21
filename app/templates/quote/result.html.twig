@@ -43,7 +43,6 @@
             <tr class="bg-gray1">
                 <th scope="row">Année de permis</th>
                 <td>{{ quote.licenseYear }}</td>
-
             </tr>
             <tr class="bg-gray1">
                 <th scope="row">Date de naissance</th>
@@ -56,15 +55,21 @@
 </div>
 
 <div class="d-flex flex-column flex-sm-row  mb-2">
-    <h3 class="d-inline fw-semibold"> Prix total estimé : <span class="bg-gray3 px-1">{{ quote.estimatedPrice }} €</span></h3>
-    <p class="fs-5 ms-4">soit <span class="bg-gray3 px-1">{{ quote.estimatedPrice / quote.duration  }} €/mois</span> </p>
+    <h3 class="d-inline fw-semibold"> Prix total estimé : <span class="bg-gray3 px-1">{{ quote.estimatedPrice|number_format(2) }} €</span></h3>
+    <p class="fs-5 ms-4">soit <span class="bg-gray3 px-1">{{ (quote.estimatedPrice / quote.duration)|number_format(2) }} €/mois</span></p>
 </div>
 
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
 
     <div class="text-center">
         {% if app.user %}
-        <a href="{{ path('app_quote', {id: quote.id}) }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
+            {% if quote.subscription %}
+                <form action="{{ path('app_account_subscription')}}" method="get">
+                    <button type="submit" class="btn btn btn-outline-blue" style="min-width: 89px;">mes demandes</button>
+                </form>  
+            {% else %}
+                <a href="{{ path('app_quote', {id: quote.id}) }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
+            {% endif %}
         {% else %}
         <a href="{{ path('app_quote') }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
         {% endif %}
@@ -73,11 +78,13 @@
     <div class="text-center">
         <a  href="{{ path('app_account_quote') }}" class="text-center btn btn-outline-blue mx-auto">Mes devis</a>  
     </div>
-    <div class="text-center">
-        <form action="{{ path('app_subscription_new', {id: quote.id})}}" method="get">
-            <button type="submit" class="text-center btn btn-outline-blue mx-auto">Souscrire</button>
-        </form> 
-    </div>
+        {% if not quote.subscription %}
+            <div class="text-center">
+                <form action="{{ path('app_subscription_new', {id: quote.id})}}" method="get">
+                    <button type="submit" class="text-center btn btn-outline-blue mx-auto">Souscrire</button>
+                </form> 
+            </div>
+        {% endif %}
     {% endif %}
 </div>
 {% endif %}

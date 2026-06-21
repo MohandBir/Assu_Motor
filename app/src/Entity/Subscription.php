@@ -38,7 +38,7 @@ class Subscription
     private ?string $status = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $submitedAt = null;
+    private ?\DateTimeImmutable $submittedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $processedAt = null;
@@ -91,20 +91,20 @@ class Subscription
         return $this;
     }
 
-    public function setTranslatedStatus()
+    public function getTranslatedStatus()
     {
         return self::TRANSLATED_STATUS[$this->status];
     }
 
 
-    public function getSubmitedAt(): ?\DateTimeImmutable
+    public function getSubmittedAt(): ?\DateTimeImmutable
     {
-        return $this->submitedAt;
+        return $this->submittedAt;
     }
 
-    public function setSubmitedAt(\DateTimeImmutable $submitedAt): static
+    public function setSubmittedAt(\DateTimeImmutable $submittedAt): static
     {
-        $this->submitedAt = $submitedAt;
+        $this->submittedAt = $submittedAt;
 
         return $this;
     }

@@ -39,18 +39,18 @@
           aria-expanded="false">
           <img src="{{ asset('image/profil.png') }}" class="" style="max-height: 24px;" alt="AssuMotor">
           </a>
-          <div class="dropdown-menu dropdown-menu-end bg-gray5">
+          <div class="dropdown-menu dropdown-menu-end bg-blue">
             {% if app.user %}
-            <a class="dropdown-item text-blue" href="#">Profil</a>
-            <a class="dropdown-item text-blue" href="{{ path('app_account_quote') }}">Devis</a>
-            <a class="dropdown-item text-blue" href="#">Demandes Souscription</a>
+            <a class="dropdown-item text-logo" href="#">Profil</a>
+            <a class="dropdown-item text-logo" href="{{ path('app_account_quote') }}">Devis</a>
+            <a class="dropdown-item text-logo" href="{{ path('app_account_subscription') }}">Demandes Souscription</a>
             <div class="dropdown-divider"></div>
             <form action="{{path('app_logout')}}" method="post">
-              <input type="submit" class="dropdown-item text-blue" value="Déconnexion">
+              <input type="submit" class="dropdown-item text-logo" value="Déconnexion">
             </form>
             {% else %}
-            <a class="dropdown-item text-blue" href="{{path('app_login')}}">Connexion</a>
-            <a class="dropdown-item text-blue" href="{{path('app_register')}}">Enregistrement</a>
+            <a class="dropdown-item text-logo" href="{{path('app_login')}}">Connexion</a>
+            <a class="dropdown-item text-logo" href="{{path('app_register')}}">Enregistrement</a>
             {% endif %}
           </div>
         </li>

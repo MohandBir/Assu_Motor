@@ -18,7 +18,7 @@ class SubscriptionManager
         $subscription = (new Subscription())
             ->setReferenceNumber($reference)
             ->setStatus(Subscription::PENDING_DOCUMENTS)
-            ->setSubmitedAt(new DateTimeImmutable('now'))
+            ->setSubmittedAt(new DateTimeImmutable('now'))
             ->setUser($quote->getUser())
             ->setQuote($quote)
         ;

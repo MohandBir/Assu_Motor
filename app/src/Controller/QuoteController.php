@@ -50,7 +50,7 @@ final class QuoteController extends AbstractController
             }
             $quote = $this->quoteManager->completeFormDataQuote($quote);
             $estimatedPrice = $this->calculator->getPrice($quote);
-            $quote->setEstimatedPrice($estimatedPrice * $quote->getDuration());
+            $quote->setEstimatedPrice(round($estimatedPrice * $quote->getDuration(), 2));
 
             if($user) {
                 $message = $savedQuote ? 'modifié' : 'sauvegardé'; 
