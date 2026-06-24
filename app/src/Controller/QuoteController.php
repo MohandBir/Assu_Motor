@@ -64,7 +64,6 @@ final class QuoteController extends AbstractController
 
             return $this->redirectToRoute('app_quote_showResult', [
                 'id' => $user ? $quote->getId() : null ,
-                //'id' => ($savedQuote) ? $savedQuote->getId() : null
             ]);
         } 
 
@@ -81,7 +80,6 @@ final class QuoteController extends AbstractController
 
         return $this->render('quote/result.html.twig', [
             'quote' => $this->getUser() ? $savedQuote : $quote,
-            //'isUpdated' => $savedQuote ? true : false,
         ]);
     }
     

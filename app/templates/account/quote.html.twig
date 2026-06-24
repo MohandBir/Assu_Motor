@@ -39,7 +39,18 @@
                     <div class="d-none d-sm-block">{{ quote.createdAt|date('d-m-Y') }}</div>
                 </td>
                 <td>{{ (quote.EstimatedPrice / quote.duration) | number_format(2)}} €/mois</td>
-                <td>{{ quote.translatedStatus }}</td>
+                <td>
+                    {% if quote.subscription %}
+                        {% if quote.subscription.status == 'cancelled' %}
+                            <span class="text-decoration-line-through">{{ quote.translatedStatus }}</span>
+                            <span class="">demande annulée</span>
+                        {% else %}
+                        <span>{{ quote.translatedStatus }}</span>
+                        {% endif %}
+                    {% else %}
+                        <span>{{ quote.translatedStatus }}</span>
+                    {% endif %}          
+                </td>
                 <td class="">
                     <div class="d-flex flex-column flex-md-row gap-sm-2 ">
                         <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">

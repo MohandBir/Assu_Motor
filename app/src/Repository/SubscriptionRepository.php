@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Subscription;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,22 +18,32 @@ class SubscriptionRepository extends ServiceEntityRepository
     }
 
 
-       public function findAllOrdredBySubmittedAt(): array
+       public function findAllOrdredBySubmittedAt(User $user): array
        {
            return $this->createQueryBuilder('s')
                ->orderBy('s.submittedAt', 'DESC')
+               ->where('s.user = :user')
+               ->setParameter('user', $user)
                ->getQuery()
                ->getResult()
            ;
        }
 
-    //    public function findOneBySomeField($value): ?Subscription
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+       public function findWidthQuoteVehicleFormulaDocument(int $id): ?Subscription
+       {
+           return $this->createQueryBuilder('s')
+               ->leftJoin('s.quote', 'q')
+               ->addSelect('q')
+               ->leftJoin('q.vehicle', 'v')
+               ->addSelect('v')
+               ->leftJoin('q.formula', 'f')
+               ->addSelect('f')
+               ->leftJoin('s.documents', 'd')
+               ->addSelect('d')
+               ->Where('s.id = :id')
+               ->setParameter('id', $id)
+               ->getQuery()
+               ->getOneOrNullResult()
+           ;
+       }
 }

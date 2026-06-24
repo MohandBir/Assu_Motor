@@ -14,7 +14,7 @@ class SubscriptionManager
 
     public function completeSubscription(Quote $quote): ?Subscription
     {
-        $reference = $quote->getUser()->getFname(). $quote->getUser()->getlname() . uniqid();
+        $reference = $quote->getUser()->getFname()[0]. $quote->getUser()->getlname()[0] . uniqid();
         $subscription = (new Subscription())
             ->setReferenceNumber($reference)
             ->setStatus(Subscription::PENDING_DOCUMENTS)
@@ -26,6 +26,13 @@ class SubscriptionManager
         return $subscription;
     }
 
+    public function updateSubscription(Subscription $subscription): ?Subscription
+    {
+        $subscription->setStatus(Subscription::PENDING_REVIEW);
+        
+        return $subscription;
+    }
+
     
 
-}
+} 

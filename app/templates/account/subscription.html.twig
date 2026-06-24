@@ -29,53 +29,70 @@
             {% for subscription in subscriptions %}
             <tr>
                 <th scope="row" class>
-                    {{ subscription.referenceNumber }}
+                    <a   href="{{ path('app_subscription_show', {id: subscription.id})}}" 
+                        class="text-decoration-none text-body ">
+                        {{ subscription.referenceNumber }}
+                    </a>   
                 </th>
                 <td>
                     <div class="d-none d-sm-block">{{ subscription.submittedAt|date('d-m-Y') }}</div>
                 </td>
                 <td>{{ subscription.translatedStatus }}</td>
-                <td class="">
-                    {% if subscription.status != 'cancelled' %}
-                        <div class="d-flex flex-column flex-md-row gap-sm-2">
-                            <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
-                                <button  class="btn btn-sm btn-outline-danger"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#deleteModal-{{ subscription.id }}"
-                                    style="max-width:min-content">
-                                    Annuler
-                                </button> 
-                            </div>
-                        </div>
-                        <div class="modal fade" id="deleteModal-{{ subscription.id }}" tabindex="-1">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-
-                                    <div class="modal-header">
-                                        <h5 class="modal-title text-warning">Annulation</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-
-                                    <div class="modal-body text-start">
-                                        Êtes-vous sûr de vouloir Annuler cette demande de souscription ?
-                                    </div>
-                                                    
-                                    <div class="modal-footer">
-                                        <form action="{{ path('app_subscription_cancel', {id: subscription.id}) }}" method="post">
-                                            <input type="hidden" name="token"
-                                                value="{{ csrf_token('cancel-subscription' ~ subscription.id) }}">
-                                            <button class="btn btn-blue">Confirmer</button>
-                                        </form>
-                                        <button class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Annuler
-                                        </button>
+                <td>
+                    <div class="d-flex flex-column flex-md-row gap-sm-2">
+                        {% if subscription.status == 'pending documents' %}
+                                <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
+                                    <form action="{{ path('app_subscription_show', {id: subscription.id})}}" method="get">
+                                        <button type="submit" class="btn btn-sm btn-outline-blue">Consulter</button>
+                                    </form>  
+                                    <form action="{{ path('app_subscription_add_doc', {id: subscription.id})}}" method="get">
+                                        <button type="submit" class="btn btn-sm btn-outline-success">Compléter</button>
+                                    </form>  
+                                    <button  class="btn btn-sm btn-outline-danger"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteModal-{{ subscription.id }}"
+                                        style="max-width:min-content">
+                                        Annuler
+                                    </button> 
+                                </div>
+    
+                            <div class="modal fade" id="deleteModal-{{ subscription.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+    
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-warning">Annulation</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+    
+                                        <div class="modal-body text-start">
+                                            Êtes-vous sûr de vouloir Annuler cette demande de souscription ?
+                                        </div>
+                                                        
+                                        <div class="modal-footer">
+                                            <form action="{{ path('app_subscription_cancel', {id: subscription.id}) }}" method="post">
+                                                <input type="hidden" name="token"
+                                                    value="{{ csrf_token('cancel-subscription' ~ subscription.id) }}">
+                                                <button class="btn btn-blue">Confirmer</button>
+                                            </form>
+                                            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% else %}
-                        <span class="btn btn-sm btn-outline-danger disabled ">Annuler</span>
-                    {% endif %}
+                        {% else %}
+                            <form action="{{ path('app_subscription_show', {id: subscription.id})}}" method="get">
+                                <button type="submit" class="btn btn-sm btn-outline-blue">Consulter</button>
+                            </form>  
+                            <div>
+                                <span class="btn btn-sm btn-outline-danger disabled ">Annuler</span>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
                 </td>
             </tr>                
             {% endfor %}
