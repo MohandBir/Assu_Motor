@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examiner souscription{% endblock %}
+
+{% block body %}
+{# affichage des messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-{{label}}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p class="text-center mb-0"> {{message}}</p>
+    </div>
+    {% endfor %}
+{% endfor %}
+
+<h1 class="text-center my-4 mb-4">Détails de La demande</h1>
+    <table class="table table-secondary">
+        <tbody class="tab">
+            <tr>
+                <th scope="row">Numéro de Reference</th>
+                <td class="text-">{{ subscription.referenceNumber }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date de création</th>
+                <td class="text-">{{ subscription.submittedAt|date('d-m-Y | H:i') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Type d'assurrance</th>
+                <td>{{ quote.formula.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Durée choisie</th>
+                <td>{{ quote.duration !== 12 ? quote.duration ~ ' mois': '1 an' }}   {{ quote.duration == 3 ? ' (reduction: 5%)' : (quote.duration == 6 ? '(reduction: 10%)' : (quote.duration == 12 ? '(reduction: 20%)' : ''))}} </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-info">Montant par mois</th>
+                <td class="bg-info">{{ (subscription.quote.estimatedPrice /subscription. quote.duration)|number_format(2) }} €/mois </td>
+            </tr>
+            <tr style="min-height: 48px;">
+                <th scope="row" class="bg-gray4">Status</th>
+                <td >
+                    <div class="d-flex justify-content-between ">
+                        <span class=" my-auto">{{subscription.TranslatedStatus }} </span>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle btn btn-sm text-blue pt-2"
+                                    data-bs-toggle="dropdown" href="#">
+                                Changer le statut
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end bg-info">
+                                <form action="{{path('app_admin_subscription_changeStatus', {id: subscription.id, statusTarget: 'documents invalid'})}}" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Documents à corriger
+                                    </button>
+                                </form>
+                                <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Valider
+                                    </button>
+                                </form>
+                                <form action="" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Rejeter
+                                    </button>
+                                </form>
+                                <form action="" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td> 
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gray3">Documents</th>
+                <td>
+                    <div class="d-flex justify-content-between">
+                        <div class=" my-auto">
+                            {% for document in documents %}
+                                <span>{{document.name|slice(0,8) ~ '...' ~ document.name|slice(-6)}}</span> <br>
+                            {% endfor %}
+                        </div>
+                        <div class="dropdown">
+                            <button class="dropdown-toggle btn btn-sm text-blue pt-2"
+                                    data-bs-toggle="dropdown" href="#">
+                                Visualiser les documents
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end bg-info">
+                                <form action="" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Documents à corriger
+                                    </button>
+                                </form>
+                                <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Valider
+                                    </button>
+                                </form>
+                                <form action="" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Rejeter
+                                    </button>
+                                </form>
+                                <form action="" method="post">
+                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td> 
+            </tr>
+        </tbody>      
+    </table>
+
+{% if subscription %}
+<div class="row">
+    <div class="col-12 col-lg-6">
+        <div class="my-2 mb-3">
+            <h3> Demandeur</h3>
+        </div>
+        <div class="border border-2 border-blue p-2 mb-4 mx-3 mx-sm-0">
+            <table class="table">
+                <tbody class="tab">
+                    <tr>
+                        <th scope="col">Nom et Prénom </th>
+                        <th scope="col">{{ subscription.user.lname|upper ~ ' ' ~ subscription.user.fname|capitalize }} </th>
+                    </tr>
+                    <tr class="bg-gray1">
+                        <th scope="row">Email</th>
+                        <td>{{ subscription.user.email }}</td>
+        
+                    </tr>
+                    <tr class="bg-gray1">
+                        <th scope="row">Date de naissance</th>
+                        <td>{{subscription.quote.birthDate | date('d-m-Y') }} </td>
+                        
+                    </tr>
+                    <tr class="bg-gray1">
+                        <th scope="row">Année de permis</th>
+                        <td>{{ subscription.quote.licenseYear }}</td>
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="my-2 mb-3">
+            <h3> Vehicule</h3>
+        </div>
+        <div class="border border-2 border-blue p-2 mb-4 mx-3 mx-sm-0">
+            <table class="table">
+                <tbody class="tab">
+                    <tr>
+                        <th scope="col">Marque</th>
+                        <td scope="col">{{ quote.vehicle.brand }}</td>
+                    </tr>
+                    <tr class="bg-gray1">
+                        <th scope="row">Model</th>
+                        <td>{{ quote.vehicle.model }}</td>
+                    </tr>
+                    <tr class="bg-gray1">
+                        <th scope="row">Année</th>
+                        <td>{{ quote.vehicle.vehicleYear }}</td>
+                    </tr>
+                    <tr class="">
+                        <th scope="row">Model</th>
+                        <td>{{ subscription.quote.duration !== 12 ? subscription.quote.duration ~ ' mois': '1 an' }}   {{ subscription.quote.duration == 3 ? ' (reduction: 5%)' : (subscription.quote.duration == 6 ? '(reduction: 10%)' : (subscription.quote.duration == 12 ? '(reduction: 20%)' : ''))}} </td>
+        
+                    </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    </div>    
+</div>
+
+
+<div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mb-4">
+    <div class="w-100">
+        <form action="{{ path('app_account_quote') }}" method="get" class="text-center">
+            <button type="submit" class="btn btn btn-outline-blue w-75">mes devis</button>
+        </form>  
+    </div>
+    <div class="w-100 text-sm-end"> 
+        <form action="{{ path('app_account_subscription')}}" method="get" class="text-center">
+            <button type="submit" class="btn btn btn-outline-blue  w-75">mes demandes</button>
+        </form>    
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

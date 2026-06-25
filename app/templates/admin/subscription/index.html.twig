@@ -3,5 +3,57 @@
 {% block title %}Hello AdminSubscriptionController!{% endblock %}
 
 {% block body %}
-<h1 class="text-center">souscriptions</h1>
+<div class="w-75 bg-primary text-center mx-auto my-4 py-2 rounded-2">
+    <span class=" fs-4 fw-semibold text-logo">Gestion des souscriptions</span>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr >
+                <th scope="col" class="bg-gray3">Demandeur</th>
+                <th scope="col" class="bg-gray3">Soumission</th>
+                <th scope="col" class="bg-gray3">Status</th>
+                <th scope="col" class="bg-gray3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subscription in subscriptions %}
+            <tr class="{{ loop.index % 2 ? 'table-info' : 'table-dark' }}">
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    {{subscription.user.fname|capitalize ~ ' ' ~ subscription.user.lname|capitalize}}
+                </th>
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    <div class="d-block d-md-inline">{{ subscription.submittedAt|date(' d-m-Y ') }}<span
+                            class="d-none d-md-inline">|</span></div>
+                    <div class="d-inline">{{ subscription.submittedAt|date('H:i') }} </div>
+                </th>
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    {{subscription.translatedStatus}}
+                </th>
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle btn {{ loop.index % 2 ? 'text-blue' : 'text-logo' }}"
+                                data-bs-toggle="dropdown" href="#">
+                            Action
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end {{ loop.index % 2 ? 'bg-info' : 'bg-gray7' }}">
+                            <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
+                                <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                    Examiner
+                                </button>
+                            <form action="" method="post">
+                                <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                    Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </th>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

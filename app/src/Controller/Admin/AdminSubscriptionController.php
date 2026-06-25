@@ -2,12 +2,23 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Subscription;
+use App\Repository\SubscriptionRepository;
+use App\Service\SubscriptionManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\EventListener\AddRequestFormatsListener;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminSubscriptionController extends AbstractController
 {
+    public function __construct(
+        private  SubscriptionRepository $subscriptionRepo,
+        private EntityManagerInterface $em,
+    )
+    {}
     #[Route('/admin', name: 'app_admin_dashboard')]
     public function dashboard(): Response
     {
@@ -26,13 +37,65 @@ final class AdminSubscriptionController extends AbstractController
     public function index(): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte coordonnée appropriés');
+            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
 
             return $this->redirectToRoute('app_login');
         }
+        $subscriptions = $this->subscriptionRepo->findWidthQuoteVehicleFormulaDocument();
+        //dd($subscriptions);
 
         return $this->render('admin/subscription/index.html.twig', [
+            'subscriptions' => $subscriptions,
+        ]);
+    }
+
+    #[Route('/admin/subscription/show/{id}', name: 'app_admin_subscription_show', requirements: ['id' => '\d+'], defaults: ['id' => null])]
+    public function show(string $id): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
+
+            return $this->redirectToRoute('app_login');
+        }
+        if($id) {
+            $subscription = $this->subscriptionRepo->findOneWidthQuoteVehicleFormulaDocument((int) $id);
+        } else {
+            $this->addFlash('warning', '404 page introuvable');
+
+            return $this->redirectToRoute('app_admin_subscription_index');
+        }
+        //dd($subscriptions);
+
+        return $this->render('admin/subscription/show.html.twig', [
+            'subscription' => $subscription,
+            'quote' => $subscription->getQuote(),
+            'documents' => $subscription->getDocuments(),
+        ]);
+    }
+
+    #[Route('/admin/subscription/change/status/{id}/{statusTarget}', name: 'app_admin_subscription_changeStatus', requirements: ['id' => '\d+'], defaults: ['id' => null])]
+    public function changeStatus(?Subscription $subscription, SubscriptionManager $subscriptionManager, Request $request): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
+
+            return $this->redirectToRoute('app_login');
+        }
+        //$statusTarget = $requ
+        $statusTarget = $request->request->get('statusTarget');       
+        if($subscription) {
+            $message = $subscriptionManager->changeStatus($subscription, $statusTarget);
+        } else {
+            $this->addFlash('warning', '404 page introuvable');
+
+            return $this->redirectToRoute('app_admin_subscription_index');
+        }
         
+
+        return $this->render('admin/subscription/show.html.twig', [
+            'subscription' => $subscription,
+            'quote' => $subscription->getQuote(),
+            'documents' => $subscription->getDocuments(),
         ]);
     }
 }

@@ -28,11 +28,11 @@ final class SubscriptionController extends AbstractController
     {
         //middlware
         if (!$quote) {
-            $this->addFlash('danger', 'Accès non autorisé');
+            $this->addFlash('warning', '404 Page introuvable');
             return$this->redirectToRoute('app_home');    
         } elseif(!$this->getUser() || $quote->getUser() !== $this->getUser()) {
             $this->addFlash('danger', 'Accès non autorisé');
-            return$this->redirectToRoute('app_home'); 
+            return$this->redirectToRoute('app_logout'); 
         }
         
         $form = $this->createForm(SubscriptionType::class, null, [
@@ -77,11 +77,11 @@ final class SubscriptionController extends AbstractController
     {
         //middlware
         if (!$subscription) {
-            $this->addFlash('danger', 'Accès non autorisé');
+            $this->addFlash('warning', '404 Page introuvable');
             return$this->redirectToRoute('app_home');    
         } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser()) {
-            $this->addFlash('danger', '404 Page introuvable');
-            return$this->redirectToRoute('app_home'); 
+            $this->addFlash('danger', 'Accès non autorisé');
+            return$this->redirectToRoute('app_logout'); 
         }
 
         $form = $this->createForm(SubscriptionType::class, $subscription, [
@@ -121,13 +121,13 @@ final class SubscriptionController extends AbstractController
     {
         //middlware
         if (!$subscription) {
-            $this->addFlash('danger', 'Accès non autorisé');
+            $this->addFlash('warning', '404 Page introuvable');
             return$this->redirectToRoute('app_home');    
         } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser()) {
             $this->addFlash('danger', '404 Page introuvable');
-            return$this->redirectToRoute('app_home'); 
+            return$this->redirectToRoute('app_logout'); 
         }  
-        $subscription = $subscriptionRepo->findWidthQuoteVehicleFormulaDocument($subscription->getId());
+        $subscription = $subscriptionRepo->findOneWidthQuoteVehicleFormulaDocument($subscription->getId());
 
         return $this->render('subscription/show.html.twig', [
             'subscription' => $subscription,
@@ -140,22 +140,27 @@ final class SubscriptionController extends AbstractController
     #[Route('/subscription/cancel/{id}', name: 'app_subscription_cancel', requirements: ['id' => '\d+'], defaults: ['id' => null])]
     public function delete(?Subscription $subscription, Request $request): Response
     {
-        if ($this->getUser()) {
-            $submittedToken = $request->getPayload()->get('token'); 
-            if ($subscription && $this->isCsrfTokenValid('cancel-subscription' . $subscription->getId(), $submittedToken)) {
-                $subscription->setStatus(Subscription::CANCELLED);
-                
-                $this->em->flush();
-                $this->addFlash('info', 'La demande de souscription a été annulée avec succès.');
-
-                return $this->redirectToRoute('app_account_subscription');
-            } else {
-                $this->addFlash('danger', 'Opération non autorisée ');
-
-                return $this->redirectToRoute('app_home');
-            }
+        //middlware
+        if (!$subscription) {
+            $this->addFlash('warning', '404 Page introuvable');
+            return$this->redirectToRoute('app_home');    
+        } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser()) {
+            $this->addFlash('danger', '404 Page introuvable');
+            return$this->redirectToRoute('app_logout'); 
         }
 
-        return $this->redirectToRoute('app_login');
+        $submittedToken = $request->getPayload()->get('token'); 
+        if ($subscription && $this->isCsrfTokenValid('cancel-subscription' . $subscription->getId(), $submittedToken)) {
+            $subscription->setStatus(Subscription::CANCELLED);
+            
+            $this->em->flush();
+            $this->addFlash('info', 'La demande de souscription a été annulée avec succès.');
+
+            return $this->redirectToRoute('app_account_subscription');
+        } else {
+            $this->addFlash('danger', 'Opération non autorisée ');
+
+            return $this->redirectToRoute('app_home');
+        }
     }
 }

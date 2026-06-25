@@ -29,7 +29,7 @@ class SubscriptionRepository extends ServiceEntityRepository
            ;
        }
 
-       public function findWidthQuoteVehicleFormulaDocument(int $id): ?Subscription
+       public function findOneWidthQuoteVehicleFormulaDocument(int $id): ?Subscription
        {
            return $this->createQueryBuilder('s')
                ->leftJoin('s.quote', 'q')
@@ -44,6 +44,24 @@ class SubscriptionRepository extends ServiceEntityRepository
                ->setParameter('id', $id)
                ->getQuery()
                ->getOneOrNullResult()
+           ;
+       }
+
+       public function findWidthQuoteVehicleFormulaDocument(): array
+       {
+           return $this->createQueryBuilder('s')
+               ->leftJoin('s.quote', 'q')
+               ->addSelect('q')
+               ->leftJoin('s.user', 'u')
+               ->addSelect('u')
+               ->leftJoin('q.vehicle', 'v')
+               ->addSelect('v')
+               ->leftJoin('q.formula', 'f')
+               ->addSelect('f')
+               ->leftJoin('s.documents', 'd')
+               ->addSelect('d')
+               ->getQuery()
+               ->getResult()
            ;
        }
 }

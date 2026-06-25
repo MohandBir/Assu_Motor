@@ -33,6 +33,14 @@ class SubscriptionManager
         return $subscription;
     }
 
+    public function changeStatus(Subscription $subscription, string $statusTarget): string
+    {
+        
+        $subscription->setStatus(Subscription::);
+        
+        return '$subscription';
+    }
+
     
 
 } 
