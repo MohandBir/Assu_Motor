@@ -20,16 +20,25 @@
         <li class="nav-item mx-1">
           <a class="nav-link" href="#">Apropos</a>
         </li>
+
+        {% if is_granted('ROLE_ADMIN') %}
+          <li class="nav-item mx-1">
+            <form action="{{path('app_admin_dashboard')}}" method="get">
+              <input type="submit" class="nav-link" value="🗝️Espace Admin" class="text-primary">
+            </form>
+          </li>
+        {% endif %}
+
         {% if app.user %}
-        <li class="nav-item mx-1">
-          <form action="{{path('app_logout')}}" method="post">
-            <input type="submit" class="nav-link" value="Déconnexion">
-          </form>
-        </li>
+          <li class="nav-item mx-1">
+            <form action="{{path('app_logout')}}" method="post">
+              <input type="submit" class="nav-link" value="Déconnexion">
+            </form>
+          </li>
         {% else %}
-        <li class="nav-item mx-1">
-          <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
-        </li>
+          <li class="nav-item mx-1">
+            <a class="nav-link" href="{{path('app_login')}}">Connexion</a>
+          </li>
         {% endif %}
       </ul>
       {# Espace perso #}
@@ -42,6 +51,10 @@
           <div class="dropdown-menu dropdown-menu-end bg-blue">
             {% if app.user %}
             <a class="dropdown-item text-logo" href="#">Profil</a>
+              {% if is_granted('ROLE_ADMIN') %}
+                <a class="dropdown-item text-logo" href="{{ path('app_admin_subscription_index') }}"> Gestion souscriptions🔐</a>
+                <a class="dropdown-item text-logo" href="#"> Gestion utilisateurs🔐</a>
+              {% endif %}
             <a class="dropdown-item text-logo" href="{{ path('app_account_quote') }}">Devis</a>
             <a class="dropdown-item text-logo" href="{{ path('app_account_subscription') }}">Demandes Souscription</a>
             <div class="dropdown-divider"></div>
