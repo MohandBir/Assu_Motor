@@ -50,15 +50,15 @@ final class AdminSubscriptionController extends AbstractController
     }
 
     #[Route('/admin/subscription/show/{id}', name: 'app_admin_subscription_show', requirements: ['id' => '\d+'], defaults: ['id' => null])]
-    public function show(string $id): Response
+    public function show(?Subscription $subscription): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
 
             return $this->redirectToRoute('app_login');
         }
-        if($id) {
-            $subscription = $this->subscriptionRepo->findOneWidthQuoteVehicleFormulaDocument((int) $id);
+        if($subscription) {
+            $subscription = $this->subscriptionRepo->findOneWidthQuoteVehicleFormulaDocument($subscription->getId());
         } else {
             $this->addFlash('warning', '404 page introuvable');
 
@@ -74,28 +74,53 @@ final class AdminSubscriptionController extends AbstractController
     }
 
     #[Route('/admin/subscription/change/status/{id}/{statusTarget}', name: 'app_admin_subscription_changeStatus', requirements: ['id' => '\d+'], defaults: ['id' => null])]
-    public function changeStatus(?Subscription $subscription, SubscriptionManager $subscriptionManager, Request $request): Response
+    public function changeStatus(?Subscription $subscription, string $statusTarget, SubscriptionManager $subscriptionManager): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
 
             return $this->redirectToRoute('app_login');
         }
-        //$statusTarget = $requ
-        $statusTarget = $request->request->get('statusTarget');       
+
         if($subscription) {
-            $message = $subscriptionManager->changeStatus($subscription, $statusTarget);
+            $flashMessage = $subscriptionManager->changeStatus($subscription, $statusTarget);
+
+            if($flashMessage !== 'isChecked') {
+                $this->addFlash('success', $flashMessage);
+                $this->em->flush();
+            } elseif ($flashMessage == 'isChecked') {
+                $this->addFlash('info', 'le status est déja actualisé');
+            }
         } else {
             $this->addFlash('warning', '404 page introuvable');
+        }
+
+        return $this->redirectToRoute('app_admin_subscription_show', [
+            'id' => $subscription->getId(),
+        ]);
+    }
+
+    #[Route('/admin/subscription/delete/{id}}', name: 'app_admin_subscription_delete')]
+    public function delete(?Subscription $subscription, Request $request): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
+
+            return $this->redirectToRoute('app_login');
+        }
+        $submittedToken = $request->getPayload()->get('token');
+
+        if ($this->isCsrfTokenValid('delete-subscription'. $subscription->getId(), $submittedToken) && $subscription) {
+            $this->em->remove($subscription);
+            $this->em->flush();
+
+            $this->addFlash('success', 'La demande a été supprimée avec succès');
 
             return $this->redirectToRoute('app_admin_subscription_index');
-        }
-        
+        } else {
+            $this->addFlash('danger', 'Accès non autorisée');
 
-        return $this->render('admin/subscription/show.html.twig', [
-            'subscription' => $subscription,
-            'quote' => $subscription->getQuote(),
-            'documents' => $subscription->getDocuments(),
-        ]);
+            return $this->redirectToRoute('app_logout');
+        }
     }
 }

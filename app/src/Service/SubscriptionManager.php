@@ -33,12 +33,30 @@ class SubscriptionManager
         return $subscription;
     }
 
-    public function changeStatus(Subscription $subscription, string $statusTarget): string
+    public function changeStatus(Subscription $subscription, string $statusTarget): ?string
     {
         
-        $subscription->setStatus(Subscription::);
+        $acceptedStatus = [
+            Subscription::VALIDATED,
+            Subscription::DOCUMENTS_INVALID,
+            Subscription::REJECTED,
+        ];
+        if (!in_array($statusTarget, $acceptedStatus)) return null;
+
+        if ($statusTarget == $subscription->getStatus()) {
+            $flashMessage = 'isChecked';
         
-        return '$subscription';
+            return $flashMessage;
+        }
+        $subscription->setStatus($statusTarget);
+
+        if(!$subscription->getProcessedAt()) {
+            $subscription->setProcessedAt(new DateTimeImmutable('now'));
+        }
+        $flashMessage = 'Le status est mis à jour avec succès';
+        
+        
+        return $flashMessage;
     }
 
     

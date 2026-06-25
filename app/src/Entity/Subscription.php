@@ -13,7 +13,7 @@ class Subscription
     const PENDING_DOCUMENTS = 'pending documents';
     const PENDING_REVIEW = 'pending review';
     const VALIDATED = 'validated';
-    const DOCUMENT_INVALID = 'documents invalid';
+    const DOCUMENTS_INVALID = 'documents invalid';
     const REJECTED = 'rejected';
     const CANCELLED = 'cancelled';
     const EXPIRED = 'expired';
@@ -22,7 +22,7 @@ class Subscription
         self::PENDING_DOCUMENTS => 'En attente de documents',
         self::PENDING_REVIEW => 'En attente d\'examen',
         self::VALIDATED => 'Validée',
-        self::DOCUMENT_INVALID => 'Documents à corriger',
+        self::DOCUMENTS_INVALID => 'Documents à corriger',
         self::REJECTED => 'Refusée',
         self::CANCELLED => 'Annulée',
         self::EXPIRED => 'expirée',

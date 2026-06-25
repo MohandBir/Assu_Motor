@@ -3,6 +3,16 @@
 {% block title %}Hello AdminSubscriptionController!{% endblock %}
 
 {% block body %}
+{# affichage des messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-{{label}}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p class="text-center mb-0"> {{message}}</p>
+    </div>
+    {% endfor %}
+{% endfor %}
+
 <div class="w-75 bg-primary text-center mx-auto my-4 py-2 rounded-2">
     <span class=" fs-4 fw-semibold text-logo">Gestion des souscriptions</span>
 </div>
@@ -21,8 +31,12 @@
             {% for subscription in subscriptions %}
             <tr class="{{ loop.index % 2 ? 'table-info' : 'table-dark' }}">
                 <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
-                    {{subscription.user.fname|capitalize ~ ' ' ~ subscription.user.lname|capitalize}}
-                </th>
+                        <a href="{{ path('app_admin_subscription_show', {id: subscription.id})}}"
+                            class="text-decoration-none {{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                        {{subscription.user.fname|capitalize ~ ' ' ~ subscription.user.lname|capitalize}}
+                        </a>
+                    </th>
+               
                 <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
                     <div class="d-block d-md-inline">{{ subscription.submittedAt|date(' d-m-Y ') }}<span
                             class="d-none d-md-inline">|</span></div>
@@ -35,15 +49,16 @@
                     <div class="dropdown">
                         <button class="dropdown-toggle btn {{ loop.index % 2 ? 'text-blue' : 'text-logo' }}"
                                 data-bs-toggle="dropdown" href="#">
-                            Action
+                            Procéder
                         </button>
                         <div class="dropdown-menu dropdown-menu-end {{ loop.index % 2 ? 'bg-info' : 'bg-gray7' }}">
                             <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
-                                <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                <button type="submit" class="dropdown-item fw-semibold {{ loop.index % 2 ? 'text-blue' : 'text-warning' }} ">
                                     Examiner
                                 </button>
+                            </form>
                             <form action="" method="post">
-                                <button type="submit" class="dropdown-item text-blue fw-semibold">
+                                <button type="submit" class="dropdown-item fw-semibold {{ loop.index % 2 ? 'text-blue' : 'text-warning' }} ">
                                     Supprimer
                                 </button>
                             </form>

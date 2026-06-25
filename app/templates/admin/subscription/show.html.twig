@@ -36,39 +36,72 @@
                 <th scope="row" class="bg-info">Montant par mois</th>
                 <td class="bg-info">{{ (subscription.quote.estimatedPrice /subscription. quote.duration)|number_format(2) }} €/mois </td>
             </tr>
+
             <tr style="min-height: 48px;">
                 <th scope="row" class="bg-gray4">Status</th>
-                <td >
+                <td>
                     <div class="d-flex justify-content-between ">
                         <span class=" my-auto">{{subscription.TranslatedStatus }} </span>
-                        <div class="dropdown">
-                            <button class="dropdown-toggle btn btn-sm text-blue pt-2"
-                                    data-bs-toggle="dropdown" href="#">
-                                Changer le statut
+                        {% if subscription.status == constant('CANCELLED', subscription) %}
+                            <button  class="btn btn-sm btn-outline-danger"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal-{{ quote.id }}"
+                                style="max-width:min-content">
+                                supprimer
                             </button>
-                            <div class="dropdown-menu dropdown-menu-end bg-info">
+                            <div class="modal fade" id="deleteModal-{{ quote.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-warning">Suppression</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <div class="modal-body text-start">
+                                            Êtes-vous sûr de vouloir supprimer cette demande?
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <form action="{{ path('app_admin_subscription_delete', {id: subscription.id}) }}" method="post">
+                                                <input type="hidden" name="token"
+                                                    value="{{ csrf_token('delete-subscription' ~ subscription.id) }}">
+                                                <button class="btn btn-blue">Supprimer</button>
+                                            </form>
+                                            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        {% else %}
+                            <div class="dropdown">
+                                <button class="dropdown-toggle btn btn-sm text-blue pt-2"
+                                        data-bs-toggle="dropdown" href="#">
+                                    Changer le statut
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end bg-info">
+                                {% if subscription.status != constant('PENDING_DOCUMENTS', subscription) %}
                                 <form action="{{path('app_admin_subscription_changeStatus', {id: subscription.id, statusTarget: 'documents invalid'})}}" method="post">
                                     <button type="submit" class="dropdown-item text-blue fw-semibold">
                                         Documents à corriger
                                     </button>
                                 </form>
-                                <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
+                                <form action="{{ path('app_admin_subscription_changeStatus', {id: subscription.id, statusTarget: 'validated'})}}" method="post">
                                     <button type="submit" class="dropdown-item text-blue fw-semibold">
                                         Valider
                                     </button>
                                 </form>
-                                <form action="" method="post">
+                                <form action="{{ path('app_admin_subscription_changeStatus', {id: subscription.id, statusTarget: 'rejected'})}}" method="post">
                                     <button type="submit" class="dropdown-item text-blue fw-semibold">
                                         Rejeter
                                     </button>
                                 </form>
-                                <form action="" method="post">
-                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Supprimer
-                                    </button>
-                                </form>
+                                {% endif %}
                             </div>
                         </div>
+                        {% endif %}
                     </div>
                 </td> 
             </tr>
@@ -87,26 +120,18 @@
                                 Visualiser les documents
                             </button>
                             <div class="dropdown-menu dropdown-menu-end bg-info">
+                                {% if documents|length > 0 %}
                                 <form action="" method="post">
                                     <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Documents à corriger
-                                    </button>
-                                </form>
-                                <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
-                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Valider
+                                        Document1
                                     </button>
                                 </form>
                                 <form action="" method="post">
                                     <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Rejeter
+                                        Document2
                                     </button>
                                 </form>
-                                <form action="" method="post">
-                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Supprimer
-                                    </button>
-                                </form>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -179,16 +204,11 @@
 </div>
 
 
-<div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mb-4">
+<div class="d-flex justify-content-center mb-4">
     <div class="w-100">
-        <form action="{{ path('app_account_quote') }}" method="get" class="text-center">
-            <button type="submit" class="btn btn btn-outline-blue w-75">mes devis</button>
+        <form action="{{ path('app_admin_subscription_index') }}" method="get" class="text-center">
+            <button type="submit" class="btn btn btn-blue w-75">Liste des demandes</button>
         </form>  
-    </div>
-    <div class="w-100 text-sm-end"> 
-        <form action="{{ path('app_account_subscription')}}" method="get" class="text-center">
-            <button type="submit" class="btn btn btn-outline-blue  w-75">mes demandes</button>
-        </form>    
     </div>
 </div>
 {% endif %}
