@@ -79,10 +79,10 @@ final class SubscriptionController extends AbstractController
         //middlware
         if (!$subscription) {
             $this->addFlash('warning', '404 Page introuvable');
-            return$this->redirectToRoute('app_home');    
+            return $this->redirectToRoute('app_home');    
         } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser() || !in_array($subscription->getStatus(), $acceptedStatus)) {
             $this->addFlash('danger', 'Accès non autorisé');
-            return$this->redirectToRoute('app_logout'); 
+            return $this->redirectToRoute('app_logout'); 
         }
 
         $form = $this->createForm(SubscriptionType::class, $subscription, [

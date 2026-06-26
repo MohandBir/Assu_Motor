@@ -5,11 +5,13 @@ namespace App\Service;
 use App\Entity\Quote;
 use App\Entity\Subscription;
 use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SubscriptionManager  
 {
     public function __construct(
-
+        private EntityManagerInterface $em,
+        private DocumentManager $documentManager,
     ) {}
 
     public function completeSubscription(Quote $quote): ?Subscription
@@ -34,8 +36,7 @@ class SubscriptionManager
     }
 
     public function changeStatus(Subscription $subscription, string $statusTarget): ?string
-    {
-        
+    {     
         $acceptedStatus = [
             Subscription::VALIDATED,
             Subscription::DOCUMENTS_INVALID,
@@ -44,10 +45,12 @@ class SubscriptionManager
         if (!in_array($statusTarget, $acceptedStatus)) return null;
 
         if ($statusTarget == $subscription->getStatus()) {
-            $flashMessage = 'isChecked';
+            $flashMessage = 'isAlreadyChanged';
         
             return $flashMessage;
         }
+        // on supprime les documents de la base de données et dans le serveur
+
         $subscription->setStatus($statusTarget);
 
         if(!$subscription->getProcessedAt()) {

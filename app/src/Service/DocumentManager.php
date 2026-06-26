@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Document;
 use App\Entity\Subscription;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -44,20 +45,19 @@ class DocumentManager
 
         return $filePath;
     }
-    // /**
-    //  * @param Document[] $documents   Tableau d'objets Document
-    //  */
-    // public function removeFiles(array $documents)
-    // {
-    //     foreach ($documents as $document) {
-    //         $filePath = $$this->documentDir. '/' .$document->getName();
+  /**
+ * @param Collection<int, Document> $documents
+ */
+    public function removeFiles(Collection $documents): void
+    {
+        foreach ($documents as $document) {
+            $filePath = $this->documentDir . $document->getName();
             
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
             
-    //         $this->em->persist($document);   
-    //     }
-        
-    //     $subscription->setStatus(Subscription::PENDING_REVIEW);
-
-    //     return $subscription;
-    // }  
+            $this->em->remove($document);   
+        }
+    }  
 }

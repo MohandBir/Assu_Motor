@@ -86,17 +86,24 @@ final class AdminSubscriptionController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        if($subscription) {
-            $flashMessage = $subscriptionManager->changeStatus($subscription, $statusTarget);
-
-            if($flashMessage !== 'isChecked') {
-                $this->addFlash('success', $flashMessage);
-                $this->em->flush();
-            } elseif ($flashMessage == 'isChecked') {
-                $this->addFlash('info', 'le status est déja actualisé');
-            }
-        } else {
+        if (!$subscription) {
             $this->addFlash('warning', '404 page introuvable');
+
+            return $this->redirectToRoute('app_admin_subscription');
+        }
+
+        $flashMessage = $subscriptionManager->changeStatus($subscription, $statusTarget);
+
+        if (!$flashMessage) {
+            $this->addFlash('warning', '404 page introuvable');
+        } elseif ($flashMessage === 'isAlreadyChanged') {
+            $this->addFlash('info', 'Le statut est déjà actualisé');
+        } else {
+            if ($statusTarget === Subscription::DOCUMENTS_INVALID) {
+                $this->documentManager->removeFiles($subscription->getDocuments());
+            }
+            $this->addFlash('success', $flashMessage);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('app_admin_subscription_show', [
@@ -112,9 +119,17 @@ final class AdminSubscriptionController extends AbstractController
 
             return $this->redirectToRoute('app_login');
         }
-        $submittedToken = $request->getPayload()->get('token');
 
-        if ($this->isCsrfTokenValid('delete-subscription'. $subscription->getId(), $submittedToken) && $subscription) {
+        if (!$subscription) {
+            $this->addFlash('warning', '404 page introuvable');
+
+            return $this->redirectToRoute('app_admin_subscription');
+        }
+
+        $submittedToken = $request->getPayload()->get('token');
+        if ($this->isCsrfTokenValid('delete-subscription'. $subscription->getId(), $submittedToken)) {
+
+            $this->documentManager->removeFiles($subscription->getDocuments());
             $this->em->remove($subscription);
             $this->em->flush();
 
