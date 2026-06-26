@@ -2,14 +2,17 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Document;
 use App\Entity\Subscription;
 use App\Repository\SubscriptionRepository;
+use App\Service\DocumentManager;
 use App\Service\SubscriptionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\EventListener\AddRequestFormatsListener;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AdminSubscriptionController extends AbstractController
@@ -17,6 +20,7 @@ final class AdminSubscriptionController extends AbstractController
     public function __construct(
         private  SubscriptionRepository $subscriptionRepo,
         private EntityManagerInterface $em,
+        private DocumentManager $documentManager,
     )
     {}
     #[Route('/admin', name: 'app_admin_dashboard')]
@@ -122,5 +126,36 @@ final class AdminSubscriptionController extends AbstractController
 
             return $this->redirectToRoute('app_logout');
         }
+    }
+
+    #[Route('/admin/subscription/doc/view/{id}', name: 'app_admin_subscription_doc_view')]
+    public function view(?Document $document): Response
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('danger', 'accès non autorisé, veuillez vous connecter au compte approprié');
+
+            return $this->redirectToRoute('app_login');
+        }
+        if ($document) {
+            $filePath = $this->documentManager->getDocumentPath($document);
+
+            if (!file_exists($filePath)) {
+                $this->addFlash('warning', 'document non trouvé');
+
+                return $this->redirectToRoute('app_admin_subscription_show', [
+                    'id' => $document->getSubscription()->getId(),
+                 ]);
+            }
+
+            $response = new BinaryFileResponse($filePath);
+            $response->setContentDisposition(
+                ResponseHeaderBag::DISPOSITION_INLINE,
+                $document->getName()
+            );
+
+            return $response;
+        } 
+
+        return new Response();   
     }
 }

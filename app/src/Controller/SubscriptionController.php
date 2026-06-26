@@ -75,11 +75,12 @@ final class SubscriptionController extends AbstractController
     #[Route('/subscription/add/doc/{id}', name: 'app_subscription_add_doc')]
     public function addDocuments(?Subscription $subscription, Request $request): Response
     {
+        $acceptedStatus = [Subscription::DOCUMENTS_INVALID, Subscription::PENDING_DOCUMENTS,];
         //middlware
         if (!$subscription) {
             $this->addFlash('warning', '404 Page introuvable');
             return$this->redirectToRoute('app_home');    
-        } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser()) {
+        } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser() || !in_array($subscription->getStatus(), $acceptedStatus)) {
             $this->addFlash('danger', 'Accès non autorisé');
             return$this->redirectToRoute('app_logout'); 
         }

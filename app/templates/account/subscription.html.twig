@@ -40,7 +40,7 @@
                 <td>{{ subscription.translatedStatus }}</td>
                 <td>
                     <div class="d-flex flex-column flex-md-row gap-sm-2">
-                        {% if subscription.status == 'pending documents' %}
+                        {% if subscription.status == constant('PENDING_DOCUMENTS', subscription) or subscription.status == constant('DOCUMENTS_INVALID', subscription) %}
                                 <div class="d-flex flex-column flex-sm-row gap-0 gap-sm-2">
                                     <form action="{{ path('app_subscription_show', {id: subscription.id})}}" method="get">
                                         <button type="submit" class="btn btn-sm btn-outline-blue">Consulter</button>

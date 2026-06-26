@@ -14,7 +14,7 @@
 {% endfor %}
 
 <h1 class="text-center my-4 mb-4">Détails de La demande</h1>
-    <table class="table table-secondary">
+    <table class="table tablle-responsive table-secondary">
         <tbody class="tab">
             <tr>
                 <th scope="row">Numéro de Reference</th>
@@ -23,6 +23,16 @@
             <tr>
                 <th scope="row">Date de création</th>
                 <td class="text-">{{ subscription.submittedAt|date('d-m-Y | H:i') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Première examination </th>
+                <td class="text-">
+                    {% if subscription.processedAt %}
+                    {{ subscription.processedAt|date('d-m-Y | H:i') }}
+                    {% else %}
+                    {{ '———'}}
+                    {% endif %}
+                </td>
             </tr>
             <tr>
                 <th scope="row">Type d'assurrance</th>
@@ -40,16 +50,16 @@
             <tr style="min-height: 48px;">
                 <th scope="row" class="bg-gray4">Status</th>
                 <td>
-                    <div class="d-flex justify-content-between ">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between ">
                         <span class=" my-auto">{{subscription.TranslatedStatus }} </span>
-                        {% if subscription.status == constant('CANCELLED', subscription) %}
+                        {% if subscription.status == constant('CANCELLED', subscription) or subscription.status == constant('REJECTED', subscription)  %}
                             <button  class="btn btn-sm btn-outline-danger"
                                 data-bs-toggle="modal" 
-                                data-bs-target="#deleteModal-{{ quote.id }}"
+                                data-bs-target="#deleteModal-{{ subscription.id }}"
                                 style="max-width:min-content">
                                 supprimer
                             </button>
-                            <div class="modal fade" id="deleteModal-{{ quote.id }}" tabindex="-1">
+                            <div class="modal fade" id="deleteModal-{{ subscription.id }}" tabindex="-1">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
 
@@ -108,11 +118,13 @@
             <tr>
                 <th scope="row" class="bg-gray3">Documents</th>
                 <td>
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between">
                         <div class=" my-auto">
-                            {% for document in documents %}
-                                <span>{{document.name|slice(0,8) ~ '...' ~ document.name|slice(-6)}}</span> <br>
-                            {% endfor %}
+                            {% if documents|length > 0 %}
+                                {% for document in documents %}
+                                    <span>{{document.name|slice(0,11) ~ '...' ~ document.name|slice(-6)}}</span> <br>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                         <div class="dropdown">
                             <button class="dropdown-toggle btn btn-sm text-blue pt-2"
@@ -121,16 +133,15 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-end bg-info">
                                 {% if documents|length > 0 %}
-                                <form action="" method="post">
-                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Document1
-                                    </button>
-                                </form>
-                                <form action="" method="post">
-                                    <button type="submit" class="dropdown-item text-blue fw-semibold">
-                                        Document2
-                                    </button>
-                                </form>
+                                    {% for document in documents %}
+                                    <div class="mb-2 p-1 pe-5">
+                                        <a href="{{ path('app_admin_subscription_doc_view', {id: document.id}) }}"
+                                                target="_blank" rel="noopener noreferrer"
+                                                class="text-blue">
+                                            {{document.name|slice(0,11) ~ '..' ~ document.name|slice(-9)}}
+                                        </a>                           
+                                    </div>
+                                    {% endfor %}
                                 {% endif %}
                             </div>
                         </div>

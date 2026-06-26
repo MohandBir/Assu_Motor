@@ -38,6 +38,12 @@ class DocumentManager
         return $subscription;
     } 
 
+    public function getDocumentPath(Document $document): string
+    {
+        $filePath = $this->documentDir. $document->getName();
+
+        return $filePath;
+    }
     // /**
     //  * @param Document[] $documents   Tableau d'objets Document
     //  */

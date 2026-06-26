@@ -57,13 +57,48 @@
                                     Examiner
                                 </button>
                             </form>
-                            <form action="" method="post">
-                                <button type="submit" class="dropdown-item fw-semibold {{ loop.index % 2 ? 'text-blue' : 'text-warning' }} ">
-                                    Supprimer
-                                </button>
-                            </form>
+                            {% if subscription.status != constant('VALIDATED', subscription) %}
+                            <button  class="dropdown-item fw-semibold text-danger }}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal-{{ subscription.id }}"
+                                style="max-width:min-content">
+                                supprimer
+                            </button>
+                            {% endif %}
                         </div>
                     </div>
+                    {% if subscription.status != constant('VALIDATED', subscription) %}
+                    <div class="modal fade" id="deleteModal-{{ subscription.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">Suppression</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                {% if not subscription.processedAt %}
+                                <div class="modal-body text-danger">
+                                    ⚠️ Attention, cette demande n'est pas encore examinée!! 
+                                </div>
+                                {% endif %}
+                                <div class="modal-body text-start">
+                                    Êtes-vous sûr de vouloir supprimer cette demande?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <form action="{{ path('app_admin_subscription_delete', {id: subscription.id}) }}" method="post">
+                                        <input type="hidden" name="token"
+                                            value="{{ csrf_token('delete-subscription' ~ subscription.id) }}">
+                                        <button class="btn btn-blue">Supprimer</button>
+                                    </form>
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %} 
                 </th>
 
             </tr>
