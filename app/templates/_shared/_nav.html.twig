@@ -50,10 +50,10 @@
           </a>
           <div class="dropdown-menu dropdown-menu-end bg-blue">
             {% if app.user %}
-            <a class="dropdown-item text-logo" href="#">Profil</a>
+            <a class="dropdown-item text-logo" href="{{ path('app_account_user') }}">Profil</a>
               {% if is_granted('ROLE_ADMIN') %}
                 <a class="dropdown-item text-logo" href="{{ path('app_admin_subscription_index') }}"> Gestion souscriptions🔐</a>
-                <a class="dropdown-item text-logo" href="#"> Gestion utilisateurs🔐</a>
+                <a class="dropdown-item text-logo" href="{{ path('app_admin_user_index') }}"> Gestion utilisateurs🔐</a>
               {% endif %}
             <a class="dropdown-item text-logo" href="{{ path('app_account_quote') }}">Devis</a>
             <a class="dropdown-item text-logo" href="{{ path('app_account_subscription') }}">Demandes Souscription</a>

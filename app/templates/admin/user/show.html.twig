@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Examiner souscription{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center my-4 mb-4">Détails d'utilisateur </h1>
+    <table class="table tablle-responsive table-secondary">
+        <tbody class="tab">
+            <tr>
+                <th scope="row">Nom</th>
+                <td class="text-">{{ user.lname|upper }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Prénom</th>
+                <td class="text-">{{ user.fname|capitalize }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Total des Demandes</th>
+                <td >
+                    <span class="{{ user.subscriptions|length > 0 ? 'text-blue bg-gray4 fw-semibold p-1' : 'bg-gray4 p-1' }}">
+                        {{ user.subscriptions|length }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Demandes en attente d'examen</th>
+                <td>
+                    <span class="{{ pendingCount ? 'text-warning bg-gray4 fw-semibold p-1 ' : 'bg-gray4 p-1' }}">
+                        {{ pendingCount }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">Souscription validé</th>
+                <td >
+                    <span class="{{ validatedCount ? 'text-success bg-gray4 fw-semibold p-1' : 'bg-gray4 p-1' }}">
+                        {{ validatedCount }}
+                    </span>
+                </td>
+            </tr>
+            <tr style="min-height: 48px;">
+                <th scope="row" class="bg-gray4">Action</th>
+                <td class="bg-gray4">
+                    <button  class="btn btn-sm btn-outline-danger"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#deleteModal-{{ user.id }}"
+                        style="max-width:min-content">
+                        supprimer
+                    </button>
+                    <div class="modal fade" id="deleteModal-{{ user.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">Suppression</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                {% if user.subscriptions|length > 0 %}
+                                <div class="modal-body text-danger">
+                                    ⚠️ Attention, cet utilisateur possède des demandes de souscription en cours 
+                                </div>
+                                {% endif %}
+                                <div class="modal-body text-start">
+                                    Êtes-vous sûr de vouloir supprimer cet utilisateur?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <form action="{{ path('app_admin_user_delete', {id: user.id}) }}" method="get">
+                                        <input type="hidden" name="token"
+                                            value="{{ csrf_token('delete-user' ~ user.id) }}">
+                                        <button class="btn btn-blue">Supprimer</button>
+                                    </form>
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </td> 
+            </tr>
+        </tbody>      
+    </table>
+<div class="d-flex justify-content-center mb-4">
+    <div class="w-100">
+        <form action="{{ path('app_admin_user_index') }}" method="get" class="text-center">
+            <button type="submit" class="btn btn btn-blue w-75">Liste des utilisateurs</button>
+        </form>  
+    </div>
+</div>
+
+{% endblock %}

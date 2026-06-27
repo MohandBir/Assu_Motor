@@ -64,6 +64,7 @@
   --bs-danger-rgb: 255, 65, 54;
   --bs-light-rgb: 246, 246, 246;
   --bs-dark-rgb: 85, 85, 85;
+  --bs-warning-subtle-rgb: 242, 138, 47;
   --bs-primary-text-emphasis: #08384a;
   --bs-secondary-text-emphasis: #606060;
   --bs-success-text-emphasis: #104912;
@@ -76,7 +77,7 @@
   --bs-secondary-bg-subtle: #fcfcfc;
   --bs-success-bg-subtle: #d4f0d5;
   --bs-info-bg-subtle: #e3f4fb;
-  --bs-warning-bg-subtle: #ffe7d1;
+  --bs-warning-bg-subtle: rgb(242, 138, 47);
   --bs-danger-bg-subtle: #ffd9d7;
   --bs-light-bg-subtle: #fbfbfb;
   --bs-dark-bg-subtle: #ced4da;
@@ -2027,6 +2028,22 @@ progress {
   color: var(--bs-table-color);
   border-color: var(--bs-table-border-color);
 }
+
+/* table personnalisé */
+.table-warning-subtle {
+  --bs-table-color: #fff;
+  --bs-table-bg: #f28a2f;
+  --bs-table-border-color: #ff9d49;
+  --bs-table-striped-bg: #ff8b26;
+  --bs-table-striped-color: #fff;
+  --bs-table-active-bg: #ff9132;
+  --bs-table-active-color: #fff;
+  --bs-table-hover-bg: #fb973f;
+  --bs-table-hover-color: #fff;
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+/* table personnalisé */
 
 .table-danger {
   --bs-table-color: #fff;
@@ -8903,6 +8920,10 @@ textarea.form-control-lg {
 .bg-blue {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-bleu-rgb), var(--bs-bg-opacity)) !important;
+}
+.bg-warning-subtle {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-warning-subtle-rgb), var(--bs-bg-opacity)) !important;
 }
 
 .bg-gray1 {

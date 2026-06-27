@@ -1,20 +1,102 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminUserController!{% endblock %}
+{% block title %}Gestion utilisateurs{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+{# affichage des messages #}
+{% for label, messages in app.flashes %}
+    {% for message in messages %}
+    <div class="alert alert-dismissible alert-{{label}}">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <p class="text-center mb-0"> {{message}}</p>
+    </div>
+    {% endfor %}
+{% endfor %}
+<div class="w-75 text-center bg-warning mx-auto my-4 py-2 rounded-2">
+    <span class=" fs-4 fw-semibold text-blue" >Gestion des utilisateurs</span>
+</div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr >
+                <th scope="col" class="bg-gray3">Utilisateur</th>
+                <th scope="col" class="bg-gray3">Total des demandes</th>
+                <th scope="col" class="bg-gray3">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if users is defined %}
+            {% for user in users %}
+            <tr class="{{ loop.index % 2 ? 'table-warning-subtle' : 'table-dark' }}">
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    <a href="{{ path('app_admin_user_show', {id: user.id}) }}"
+                        class="text-decoration-none {{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    {{ user.lname|upper ~ ' ' ~ user.fname|capitalize }}
+                    </a>
+                </th>
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    <span 
+                    class="{{ user.subscriptions|length > 0 ? ' fw-semibold p-1' : ' fw-semibold p-1' }}">
+                        {{user.subscriptions|length > 0 ? user.subscriptions|length : '-'}}
+                    </span>
+                </th>
+                <th class="{{ loop.index % 2 ? 'text-blue' : 'text-logo' }}">
+                    <div class="dropdown">
+                        <button class="dropdown-toggle btn {{ loop.index % 2 ? 'text-blue' : 'text-logo' }}"
+                                data-bs-toggle="dropdown" href="#">
+                            Procéder
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end {{ loop.index % 2 ? 'bg-warning-subtle' : 'bg-gray7' }}">
+                            <form action="{{ path('app_admin_user_show', {id: user.id}) }}" method="get">
+                                <button type="submit" class="dropdown-item fw-semibold {{ loop.index % 2 ? 'text-blue' : 'text-warning' }} ">
+                                    Consulter
+                                </button>
+                            </form>
+                            <button  class="dropdown-item fw-semibold text-danger }}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#deleteModal-{{ user.id }}"
+                                style="max-width:min-content">
+                                supprimer
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deleteModal-{{ user.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/var/www/html/src/Controller/AdminUserController.php</code></li>
-        <li>Your template at <code>/var/www/html/templates/admin_user/index.html.twig</code></li>
-    </ul>
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-warning">Suppression</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                {% if user.subscriptions|length > 0 %}
+                                <div class="modal-body text-danger">
+                                    ⚠️ Attention, cet utilisateur possède des demandes de souscription en cours 
+                                </div>
+                                {% endif %}
+                                <div class="modal-body text-start">
+                                    Êtes-vous sûr de vouloir supprimer cet utilisateur?
+                                </div>
+
+                                <div class="modal-footer">
+                                    <form action="{{ path('app_admin_user_delete', {id: user.id}) }}" method="post">
+                                        <input type="hidden" name="token"
+                                            value="{{ csrf_token('delete-user' ~ user.id) }}">
+                                        <button class="btn btn-blue">Supprimer</button>
+                                    </form>
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </th>
+
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
