@@ -85,10 +85,16 @@
                         {% else %}
                             <form action="{{ path('app_subscription_show', {id: subscription.id})}}" method="get">
                                 <button type="submit" class="btn btn-sm btn-outline-blue">Consulter</button>
-                            </form>  
+                            </form> 
+                            {% if subscription.status == constant('VALIDATED', subscription) %}  
                             <div>
-                                <span class="btn btn-sm btn-outline-danger disabled ">Annuler</span>
-                            </div>
+                                <a href="{{ path('app_attestation_generate', {id: subscription.id}) }}"
+                                class="btn btn-sm btn-outline-success" 
+                                target="_blank">
+                                📄Mon attestation
+                                </a>
+                            </div>                          
+                            {% endif %} 
                         {% endif %}
 
 

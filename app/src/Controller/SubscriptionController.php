@@ -125,7 +125,7 @@ final class SubscriptionController extends AbstractController
             $this->addFlash('warning', '404 Page introuvable');
             return$this->redirectToRoute('app_home');    
         } elseif(!$this->getUser() || $subscription->getUser() !== $this->getUser()) {
-            $this->addFlash('danger', '404 Page introuvable');
+            $this->addFlash('danger', 'Accès non autorisé');
             return$this->redirectToRoute('app_logout'); 
         }  
         $subscription = $subscriptionRepo->findOneWidthQuoteVehicleFormulaDocument($subscription->getId());

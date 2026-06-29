@@ -14,7 +14,7 @@ final class AccountController extends AbstractController
     #[Route('/account/user', name: 'app_account_user')]
     public function user(UserRepository $user): Response
     {    
-        if (!$this->isGranted('ROLE_USER')) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -26,7 +26,7 @@ final class AccountController extends AbstractController
     #[Route('/account/quote', name: 'app_account_quote')]
     public function quote(QuoteRepository $quoteRepo): Response
     {    
-        if (!$this->isGranted('ROLE_USER')) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
         $quotes = $quoteRepo->findWithVehicleAndFormula($this->getUser());
@@ -39,7 +39,7 @@ final class AccountController extends AbstractController
     #[Route('/account/subscription', name: 'app_account_subscription')]
     public function subscription(SubscriptionRepository $subscriptionRepo): Response
     {    
-        if (!$this->isGranted('ROLE_USER')) {
+        if (!$this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
         $subscriptions = $subscriptionRepo->findAllOrdredBySubmittedAt($this->getUser());

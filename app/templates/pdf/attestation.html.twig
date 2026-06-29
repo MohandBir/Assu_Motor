@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Attestation de souscription</title>
+    <style>
+        * {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+        body {
+            margin: 30px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+        h1 {
+            color: #0d6efd;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .info-block {
+            margin-bottom: 25px;
+            background: #f4f6f8;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .info-block h3 {
+            color: #0d6efd;
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .info-row {
+            margin: 8px 0;
+            font-size: 13px;
+        }
+        .label {
+            font-weight: bold;
+            display: inline-block;
+            width: 180px;
+        }
+        .price-box {
+            background: #0d6efd;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+        .price-box .amount {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .footer {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            text-align: center;
+            font-size: 10px;
+            color: #999;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+        .reference {
+            text-align: right;
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">AssuMotor.fr</div>
+        <div class="subtitle">L'assurance auto en quelques clics</div>
+    </div>
+
+    <div class="reference">
+        Référence : <strong>{{ subscription.referenceNumber }}</strong><br>
+        Date d'édition : {{ "now"|date('d/m/Y') }}
+    </div>
+
+    <h1>Attestation de souscription</h1>
+
+    <div class="info-block">
+        <h3>Souscripteur</h3>
+        <div class="info-row">
+            <span class="label">Nom et Prénom:</span>
+            {{ subscription.user.lname|upper }} {{ subscription.user.fname|capitalize }}
+        </div>
+        <div class="info-row">
+            <span class="label">Email :</span>
+            {{ subscription.user.email }}
+        </div>
+    </div>
+
+    <div class="info-block">
+        <h3>Véhicule assuré</h3>
+        <div class="info-row">
+            <span class="label">Marque :</span> {{ subscription.quote.vehicle.brand }}
+        </div>
+        <div class="info-row">
+            <span class="label">Modèle :</span> {{ subscription.quote.vehicle.model }}
+        </div>
+        <div class="info-row">
+            <span class="label">Année :</span> {{ subscription.quote.vehicle.vehicleYear }}
+        </div>
+        <div class="info-row">
+            <span class="label">Immatriculation :</span> 
+            <strong>{{ subscription.quote.vehicle.licensePlate }}</strong>
+        </div>
+    </div>
+
+    <div class="info-block">
+        <h3>Contrat d'assurance</h3>
+        <div class="info-row">
+            <span class="label">Formule :</span> 
+            <strong>{{ subscription.quote.formula.name }}</strong>
+        </div>
+        <div class="info-row">
+            <span class="label">Durée :</span> 
+            {{ subscription.quote.duration }} mois
+        </div>
+        <div class="info-row">
+            <span class="label">Date de souscription :</span> 
+            {{ subscription.submittedAt|date('d/m/Y') }}
+        </div>
+        {% if subscription.processedAt %}
+        <div class="info-row">
+            <span class="label">Date de validation :</span> 
+            {{ subscription.processedAt|date('d/m/Y') }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="price-box">
+        <div>Prime totale</div>
+        <div class="amount">{{ subscription.quote.estimatedPrice|number_format(2, ',', ' ') }} €</div>
+        <div style="font-size: 12px; margin-top: 5px;">
+            soit {{ (subscription.quote.estimatedPrice / subscription.quote.duration)|number_format(2, ',', ' ') }} €/mois
+        </div>
+    </div>
+
+    <div class="footer">
+        AssuMotor.fr — Document généré automatiquement<br>
+        Cette attestation a une valeur informative. Le contrat officiel fait foi.
+    </div>
+
+</body>
+</html>
