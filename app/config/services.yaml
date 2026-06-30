@@ -7,6 +7,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    PUBLIC_DIR: '%kernel.project_dir%/public/'
     DOCUMENT_DIR: '%kernel.project_dir%/var/documents/'
     ATTESTATION_DIR: '%kernel.project_dir%/var/documents/attestations/'
 services:
@@ -27,6 +28,10 @@ services:
     App\Controller\AttestationController:
         arguments:
             $attestationDir: '%ATTESTATION_DIR%'
+
+    App\Service\PdfGenerator:
+        arguments:
+            $publicDir: '%PUBLIC_DIR%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

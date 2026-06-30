@@ -6,20 +6,21 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Twig\Environment;
 
-class PdfGenereator  
+class PdfGenerator  
 {
     public function __construct(
         private Environment $twig,
+        private string $publicDir,
     ) {}
 
     public function generate(string $template, array $data = []): string
     {
-        $options = (new Options())
-            ->set('defaultFont', 'Helvetica')
-            ->set('isRemoteEnable', true)  // pour charger des images externes
-            ->set('isHtml5ParseEnable', true)
-        ;
-
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+        $options->set('isRemoteEnabled', true);  // pour charger des images externes
+        $options->set('chroot', $this->publicDir);
+        $options->set('isHtml5ParserEnabled', true);
+        
         $dompdf = new Dompdf($options);
 
         // Rendre le template Twig en HTML

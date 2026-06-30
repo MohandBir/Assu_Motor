@@ -13,21 +13,21 @@
         }
         .header {
             text-align: center;
-            border-bottom: 3px solid #0d6efd;
+            border-bottom: 3px solid #00295D;
             padding-bottom: 15px;
             margin-bottom: 30px;
         }
         .logo {
             font-size: 32px;
             font-weight: bold;
-            color: #0d6efd;
+            color: #00295D;
         }
         .subtitle {
             font-size: 14px;
             color: #666;
         }
         h1 {
-            color: #0d6efd;
+            color: #00295D;
             text-align: center;
             margin-bottom: 40px;
         }
@@ -38,7 +38,7 @@
             border-radius: 5px;
         }
         .info-block h3 {
-            color: #0d6efd;
+            color: #00295D;
             margin: 0 0 10px 0;
             font-size: 14px;
             border-bottom: 1px solid #ddd;
@@ -54,7 +54,7 @@
             width: 180px;
         }
         .price-box {
-            background: #0d6efd;
+            background: #00295D;
             color: white;
             text-align: center;
             padding: 20px;
@@ -82,11 +82,15 @@
             color: #666;
             margin-bottom: 20px;
         }
+        .img {
+            width: 40px;
+        }
     </style>
 </head>
 <body>
 
     <div class="header">
+        <img src="{{ absolute_url(asset('/image/logo3.png')) }}" alt="assuMotor" class="img">
         <div class="logo">AssuMotor.fr</div>
         <div class="subtitle">L'assurance auto en quelques clics</div>
     </div>
