@@ -32,12 +32,12 @@ class SubscriptionType extends AbstractType
                         'maxSize' => '5M',
                         'mimeTypes' => [
                             'application/pdf' , 
-                            'image/jpg', 
-                            'imag/png', 
-                            'imag/webp', 
+                            'image/jpeg', 
+                            'image/png', 
+                            'image/webp', 
                         ],
                         'maxSizeMessage' => 'La taille de fichier ne doit pas dépasser 5 MO',
-                        'mimeTypesMessage' => 'Formats acceptés : PDF, JPEG, PNG, WEBP',
+                        'mimeTypesMessage' => 'Formats acceptés : PDF, JPEG/JPG, PNG, WEBP',
                         'groups' => ['validate_docs'],
                     ])
                 ]
