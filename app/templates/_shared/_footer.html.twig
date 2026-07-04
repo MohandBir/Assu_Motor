@@ -1,16 +1,22 @@
 <div class="bg-body-tertiary" >
-    <div class="container-fluid bg-blue" >
+    <div class="container-fluid bg-blue pt-2" >
         <div class="row d-flex flex-row align-items-center" style="min-height: 70px;">
             <div class="col-md-4 col-lg-4 text-center">
         <p>
-            <a href="#" class="text-dark text-decoration-none text-center text-white">Mensions légales</a>
+            <a href="{{path('app_home')}}" class="text-decoration-none text-center text-logo">Mensions légales</a>
         </p>
             </div>
         <div class="col-md-4 col-lg-4 text-center text-white">
-            <p class="fw-semibold fs-4">Pied de page</p>
+            <a href="{{path('app_home')}}" class="text-decoration-none">
+                <h1 class=" fw-bold text-blue text-shadow-lg mb-1
+                        display-4 bg-title"
+                        >
+                    AssuMotor<span class="text-warning">.fr</span>
+                </h1>
+            </a>
         </div>
             <div class="col-md-4 col-lg-4 text-center ">
-            <p><a class="text-dark text-white"> Contactez-nous</a></p>
+            <p><a class="text-logo"> Contactez-nous</a></p>
             </div>
         </div>
     </div>

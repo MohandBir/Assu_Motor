@@ -49,7 +49,6 @@ class SubscriptionManager
         
             return $flashMessage;
         }
-        // on supprime les documents de la base de données et dans le serveur
 
         $subscription->setStatus($statusTarget);
 

@@ -59,34 +59,34 @@ class QuoteManager
 
     }
 
-    public function rebuildFromSession(Quote $savedQuote ,Quote $quote, Vehicle $vehicle, User $user): Quote
-    {
+    // public function rebuildFromSession(Quote $savedQuote ,Quote $quote, Vehicle $vehicle, User $user): Quote
+    // {
 
-        $vehicle
-            ->setType($quote->getVehicle()->getType())
-            ->setBrand($quote->getVehicle()->getBrand())
-            ->setModel($quote->getVehicle()->getModel())
-            ->setVehicleYear($quote->getVehicle()->getVehicleYear())
-            ->setLicensePlate($quote->getVehicle()->getLicensePlate())
-        ;
+    //     $vehicle
+    //         ->setType($quote->getVehicle()->getType())
+    //         ->setBrand($quote->getVehicle()->getBrand())
+    //         ->setModel($quote->getVehicle()->getModel())
+    //         ->setVehicleYear($quote->getVehicle()->getVehicleYear())
+    //         ->setLicensePlate($quote->getVehicle()->getLicensePlate())
+    //     ;
         
-        $savedQuote
-            ->setDuration($quote->getDuration())
-            ->setCreatedAt($quote->getCreatedAt())
-            ->setExpiredAt($quote->getExpiredAt())
-            ->setStatus($quote->getStatus())
-            ->setLicenseYear($quote->getLicenseYear())
-            ->setBirthDate($quote->getBirthDate())
-            ->setBonusMalus($quote->getBonusMalus())
-            ->setEstimatedPrice($quote->getEstimatedPrice())
-            ->setEstimatedPrice($quote->getEstimatedPrice())
-            //->setFormula($quote->getFormula())
-            ->setVehicle($vehicle)
-            ->setUser($user)
-            ;
+    //     $savedQuote
+    //         ->setDuration($quote->getDuration())
+    //         ->setCreatedAt($quote->getCreatedAt())
+    //         ->setExpiredAt($quote->getExpiredAt())
+    //         ->setStatus($quote->getStatus())
+    //         ->setLicenseYear($quote->getLicenseYear())
+    //         ->setBirthDate($quote->getBirthDate())
+    //         ->setBonusMalus($quote->getBonusMalus())
+    //         ->setEstimatedPrice($quote->getEstimatedPrice())
+    //         ->setEstimatedPrice($quote->getEstimatedPrice())
+    //         //->setFormula($quote->getFormula())
+    //         ->setVehicle($vehicle)
+    //         ->setUser($user)
+    //         ;
             
-        return $savedQuote;
-    }
+    //     return $savedQuote;
+    // }
 
     public function reatacheFormula($quote=null): ?Quote
     {

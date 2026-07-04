@@ -32,7 +32,7 @@ class SubscriptionType extends AbstractType
                         'maxSize' => '5M',
                         'mimeTypes' => [
                             'application/pdf' , 
-                            'image/jpeg', 
+                            'image/jpg', 
                             'imag/png', 
                             'imag/webp', 
                         ],
