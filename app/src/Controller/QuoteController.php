@@ -25,9 +25,13 @@ final class QuoteController extends AbstractController
         private EntityManagerInterface $em,
         ) {}
 
-    #[Route('/quote/{id}', name: 'app_quote',  requirements: ['id' => '\d+'], defaults: ['id' => null])]
-    public function index(?Quote $savedQuote ,Request $request): Response
+    #[Route('/quote/{id}', name: 'app_quote_new',  requirements: ['id' => '\d+'], defaults: ['id' => null])]
+    public function new(?Quote $savedQuote ,Request $request): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');    
+        }
+        
         $session = $request->getSession();
         $user = $this->getUser();
         if ($user) {
@@ -86,22 +90,23 @@ final class QuoteController extends AbstractController
     #[Route('/quote/delete/{id}', name: 'app_quote_delete', requirements: ['id' => '\d+'], defaults: ['id' => null])]
     public function delete(?Quote $quote, Request $request): Response
     {
-        if ($this->getUser()) {
-            $submittedToken = $request->getPayload()->get('token'); 
-            if ($quote && $this->isCsrfTokenValid('delete-quote' . $quote->getId(), $submittedToken)) {
-                $this->em->remove($quote);
-                $this->em->flush();
-                $this->addFlash('success', 'Le devis a été supprimé avec succès.');
-
-                return $this->redirectToRoute('app_account_quote');
-            } else {
-                $this->addFlash('danger', 'Opération non autorisée ');
-
-                return $this->redirectToRoute('app_home');
-            }
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');    
         }
 
-        return $this->redirectToRoute('app_login');
+        $submittedToken = $request->getPayload()->get('token'); 
+
+        if ($quote && $this->isCsrfTokenValid('delete-quote' . $quote->getId(), $submittedToken)) {
+            $this->em->remove($quote);
+            $this->em->flush();
+            $this->addFlash('success', 'Le devis a été supprimé avec succès.');
+
+            return $this->redirectToRoute('app_account_quote');
+        } else {
+            $this->addFlash('danger', 'Opération non autorisée ');
+
+            return $this->redirectToRoute('app_home');
+        }
     }
     
     #[Route('/quote/brand/{brandName}', name: 'app_quote_getModelAjax')]

@@ -60,6 +60,7 @@ class SubscriptionRepository extends ServiceEntityRepository
                ->addSelect('f')
                ->leftJoin('s.documents', 'd')
                ->addSelect('d')
+               ->orderBy('s.submittedAt', 'DESC')
                ->getQuery()
                ->getResult()
            ;

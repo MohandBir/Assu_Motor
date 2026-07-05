@@ -58,7 +58,7 @@
                                 <button type="submit" class="btn btn-sm btn-outline-blue" style="min-width: 89px;;">consulter</button>
                             </form>
                             {% if not quote.subscription %}
-                                <form action="{{ path('app_quote', {id: quote.id})}}" method="get">
+                                <form action="{{ path('app_quote_new', {id: quote.id})}}" method="get">
                                     <button type="submit" class="btn btn-sm btn-outline-blue" style="min-width: 89px;">Modifier</button>
                                 </form>
                             {% endif %}

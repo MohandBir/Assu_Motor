@@ -4,31 +4,16 @@ namespace App\Service;
 
 use App\Entity\Formula;
 use App\Entity\Quote;
-use App\Entity\User;
-use App\Entity\Vehicle;
-use App\Repository\ModelRepository;
 use App\Repository\VehicleReferenceRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class QuoteManager  
 {
     public function __construct(
-        private ModelRepository $modelRepo,  
         private VehicleReferenceRepository $referenceRepo,  
         private EntityManagerInterface $em,
     ) {}
-
-    public function getSessionQuote(SessionInterface $session): ?Quote
-    {
-        return $session->get('quote');
-    }
-
-    public function setSessionQuote(SessionInterface $session, Quote $quote): void
-    {
-        $session->set('quote', $quote);
-    }
 
     public function isValidVehicle(Quote $quote)
     {
@@ -56,37 +41,7 @@ class QuoteManager
         ;
 
         return $quote;
-
     }
-
-    // public function rebuildFromSession(Quote $savedQuote ,Quote $quote, Vehicle $vehicle, User $user): Quote
-    // {
-
-    //     $vehicle
-    //         ->setType($quote->getVehicle()->getType())
-    //         ->setBrand($quote->getVehicle()->getBrand())
-    //         ->setModel($quote->getVehicle()->getModel())
-    //         ->setVehicleYear($quote->getVehicle()->getVehicleYear())
-    //         ->setLicensePlate($quote->getVehicle()->getLicensePlate())
-    //     ;
-        
-    //     $savedQuote
-    //         ->setDuration($quote->getDuration())
-    //         ->setCreatedAt($quote->getCreatedAt())
-    //         ->setExpiredAt($quote->getExpiredAt())
-    //         ->setStatus($quote->getStatus())
-    //         ->setLicenseYear($quote->getLicenseYear())
-    //         ->setBirthDate($quote->getBirthDate())
-    //         ->setBonusMalus($quote->getBonusMalus())
-    //         ->setEstimatedPrice($quote->getEstimatedPrice())
-    //         ->setEstimatedPrice($quote->getEstimatedPrice())
-    //         //->setFormula($quote->getFormula())
-    //         ->setVehicle($vehicle)
-    //         ->setUser($user)
-    //         ;
-            
-    //     return $savedQuote;
-    // }
 
     public function reatacheFormula($quote=null): ?Quote
     {

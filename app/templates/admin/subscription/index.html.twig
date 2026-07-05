@@ -54,7 +54,7 @@
                         <div class="dropdown-menu dropdown-menu-end {{ loop.index % 2 ? 'bg-info' : 'bg-gray7' }}">
                             <form action="{{ path('app_admin_subscription_show', {id: subscription.id})}}" method="get">
                                 <button type="submit" class="dropdown-item fw-semibold {{ loop.index % 2 ? 'text-blue' : 'text-warning' }} ">
-                                    Examiner
+                                    {{subscription.status != constant('VALIDATED', subscription) ? 'Examiner' : 'consulter'}}
                                 </button>
                             </form>
                             {% if subscription.status != constant('VALIDATED', subscription) %}

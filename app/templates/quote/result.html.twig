@@ -68,7 +68,7 @@
                     <button type="submit" class="btn btn btn-outline-blue" style="min-width: 89px;">mes demandes</button>
                 </form>  
             {% else %}
-                <a href="{{ path('app_quote', {id: quote.id}) }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
+                <a href="{{ path('app_quote_new', {id: quote.id}) }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
             {% endif %}
         {% else %}
         <a href="{{ path('app_quote') }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
