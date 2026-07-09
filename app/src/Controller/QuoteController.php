@@ -28,12 +28,16 @@ final class QuoteController extends AbstractController
     #[Route('/quote/{id}', name: 'app_quote_new',  requirements: ['id' => '\d+'], defaults: ['id' => null])]
     public function new(?Quote $savedQuote ,Request $request): Response
     {
-        if (!$this->getUser()) {
-            return $this->redirectToRoute('app_login');    
-        }
-        
-        $session = $request->getSession();
         $user = $this->getUser();
+        // contrôle d'accès
+        if ($savedQuote) {
+            if ($user !== $savedQuote->getUser()) {
+                return $this->redirectToRoute('app_login');    
+            }
+        }
+        //réccupere la session
+        $session = $request->getSession();
+        // initiation d'objet quote
         if ($user) {
             $quote = $savedQuote ?? null;
         } else {
@@ -46,16 +50,20 @@ final class QuoteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // charger les données soumises
             $quote = $form->getData();
+            // verifier la combinaison
             if (!$this->quoteManager->isValidVehicle($quote)) {
                 $this->addFlash('danger', 'Combinaison marque/modèle/année invalide.');
                 
                 return $this->redirectToRoute('app_quote');
             }
+            // complétet l'objet quote
             $quote = $this->quoteManager->completeFormDataQuote($quote);
+            // calculer le prix estimé
             $estimatedPrice = $this->calculator->getPrice($quote);
             $quote->setEstimatedPrice(round($estimatedPrice * $quote->getDuration(), 2));
-
+            // sauvegarde en BDD ou en session 
             if($user) {
                 $message = $savedQuote ? 'modifié' : 'sauvegardé'; 
                 $quote->setUser($user);
@@ -65,7 +73,7 @@ final class QuoteController extends AbstractController
             } else {
                 $session->set('quote', $quote);
             }
-
+            // redirection vers la route resultat
             return $this->redirectToRoute('app_quote_showResult', [
                 'id' => $user ? $quote->getId() : null ,
             ]);

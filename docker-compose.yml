@@ -50,13 +50,6 @@ services:
       PMA_HOST: mysql
     depends_on:
       - mysql
-
-  mailhog:
-    image: mailhog/mailhog
-    container_name: assuMotor_mailhog
-    ports:
-      - "1025:1025"   # SMTP
-      - "8025:8025"   # interface web
       
 volumes:
   mysql_data:
