@@ -71,7 +71,7 @@
                 <a href="{{ path('app_quote_new', {id: quote.id}) }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
             {% endif %}
         {% else %}
-        <a href="{{ path('app_quote') }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
+        <a href="{{ path('app_quote_new') }}" class="text-center btn btn-outline-blue mx-auto">Modifier</a>
         {% endif %}
     </div>
     {% if app.user %}
