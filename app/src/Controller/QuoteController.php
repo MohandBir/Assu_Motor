@@ -56,7 +56,7 @@ final class QuoteController extends AbstractController
             if (!$this->quoteManager->isValidVehicle($quote)) {
                 $this->addFlash('danger', 'Combinaison marque/modèle/année invalide.');
                 
-                return $this->redirectToRoute('app_quote');
+                return $this->redirectToRoute('app_quote_new');
             }
             // complétet l'objet quote
             $quote = $this->quoteManager->completeFormDataQuote($quote);

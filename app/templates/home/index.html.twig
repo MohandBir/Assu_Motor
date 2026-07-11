@@ -6,12 +6,12 @@
 
 {# affichage des messages #}
 {% for label, messages in app.flashes %}
-    {% for message in messages %}
-    <div class="alert alert-dismissible alert-{{label}}">
+{% for message in messages %}
+<div class="alert alert-dismissible alert-{{label}}">
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     <p class="text-center mb-0"> {{message}}</p>
-    </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% endfor %}
 
 <main class="my-3">
@@ -20,9 +20,9 @@
     </div>
     <div class="container">
         <div class="row mt-5 justify-content-center">
-    
+
             <div class="col-12  col-md-6 col-lg-4 col-xl-3">
-                <div class="card border-2 border-blue mb-3 text-blue" >
+                <div class="card border-2 border-blue mb-3 text-blue">
                     <div class="card-header text-center display-4">💰</div>
                     <div class="card-body" style="min-height: 160px">
                         <h4 class="card-title text-center">Tarifs compétitifs</h4>
@@ -30,40 +30,44 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-12  col-md-6 col-lg-4 col-xl-3 ">
                 <div class="card border-2 border-blue mb-3 text-blue">
                     <div class="card-header text-center display-4">⚡</div>
                     <div class="card-body" style="min-height: 160px">
                         <h4 class="card-title text-center"> Devis en 2 minutes</h4>
-                        <p class="card-text text-center pt-3">Une simulation rapide, 100 % en ligne, sans engagement.</p>
+                        <p class="card-text text-center pt-3">Une simulation rapide, 100 % en ligne, sans engagement.
+                        </p>
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-12  col-md-6 col-lg-4 col-xl-3 ">
                 <div class="card border-2 border-blue mb-3 text-blue">
                     <div class="card-header text-center display-4">🛡️</div>
                     <div class="card-body" style="min-height: 160px">
                         <h4 class="card-title text-center">Couverture adaptée</h4>
-                        <p class="card-text text-center pt-3">Trois formules pour répondre à tous vos besoins : Tiers, Tiers+, Tous risques</p>
+                        <p class="card-text text-center pt-3">Trois formules pour répondre à tous vos besoins : Tiers,
+                            Tiers+, Tous risques</p>
                     </div>
                 </div>
             </div>
-    
+
             <div class="col-12  col-md-6 col-lg-4 col-xl-3 ">
                 <div class="card border-2 border-blue mb-3 text-blue">
                     <div class="card-header text-center display-4">📞</div>
                     <div class="card-body" style="min-height: 160px">
                         <h4 class="card-title text-center">Conseillers à l'écoute</h4>
-                        <p class="card-text text-center pt-3">Une équipe disponible du lundi au samedi pour vous accompagner.</p>
+                        <p class="card-text text-center pt-3">Une équipe disponible du lundi au samedi pour vous
+                            accompagner.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="text-center mx-auto">
-        <a href="{{ path('app_quote_new') }}" class="text-center mt-3 mb-5 btn btn-blue text-logo w-50"> Faire un Devis</a>
+        <a href="{{ path('app_quote_new') }}" class="text-center mt-3 mb-5 btn btn-blue text-logo w-50"> Faire un
+            Devis</a>
     </div>
 </main>
 
