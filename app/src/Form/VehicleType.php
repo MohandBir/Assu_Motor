@@ -2,12 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\Brand;
-use App\Entity\Model;
 use App\Entity\Vehicle;
 use App\Repository\BrandRepository;
 use App\Repository\ModelRepository;
-use Doctrine\Common\Collections\Placeholder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -17,12 +14,12 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class VehicleType extends AbstractType 
+class VehicleType extends AbstractType
 {
     public function __construct(
         private BrandRepository $brandRepo,
         private ModelRepository $modelRepo,
-    ){}
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -57,9 +54,9 @@ class VehicleType extends AbstractType
                     new Choice([
                         'choices' => ['car', 'moto', 'truck',],
                     ])
-                ] 
+                ]
             ])
-            ->add('brand' , ChoiceType::class, [
+            ->add('brand', ChoiceType::class, [
                 'label' => 'Marque',
                 'choices' => $brandChoices,
                 'placeholder' => 'Choisissez la marque',
@@ -69,17 +66,17 @@ class VehicleType extends AbstractType
                     ]),
                 ]
             ])
-            ->add('model' , ChoiceType::class, [
-                'label' => 'Model',
+            ->add('model', ChoiceType::class, [
+                'label' => 'Modèle',
                 'choices' => $modelChoices,
-                'placeholder' => 'Choisissez la model',
+                'placeholder' => 'Choisissez le modèle',
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'veuilles sellectionner un model',
+                        'message' => 'veuilles sellectionner un modèle',
                     ]),
                 ]
             ])
-            ->add('vehicleYear', ChoiceType::class,[
+            ->add('vehicleYear', ChoiceType::class, [
                 'label' => 'Année',
                 'placeholder' => 'Choisissez une année',
                 'choices' => array_combine(
@@ -94,7 +91,7 @@ class VehicleType extends AbstractType
                         'choices' => range(date('Y'), '1990'),
                     ])
                 ],
-            ])    
+            ])
             ->add('licensePlate', TextType::class, [
                 'label' => 'Immatriculation',
                 'label_attr' => [
@@ -105,7 +102,7 @@ class VehicleType extends AbstractType
                     'placeholder' => 'AA-123-AA.',
                     'maxlength' => 9,
                 ],
-                
+
                 'constraints' => [
                     new Regex([
                         'pattern' => '/^[A-Za-z]{2}-\d{3}-[A-Za-z]{2}$/',
@@ -113,7 +110,7 @@ class VehicleType extends AbstractType
                     ])
                 ]
             ])
-                    
+
         ;
     }
 

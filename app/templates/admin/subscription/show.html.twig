@@ -195,19 +195,13 @@
                         <td scope="col">{{ quote.vehicle.brand }}</td>
                     </tr>
                     <tr class="bg-gray1">
-                        <th scope="row">Model</th>
+                        <th scope="row">Modèle</th>
                         <td>{{ quote.vehicle.model }}</td>
                     </tr>
                     <tr class="bg-gray1">
                         <th scope="row">Année</th>
                         <td>{{ quote.vehicle.vehicleYear }}</td>
-                    </tr>
-                    <tr class="">
-                        <th scope="row">Model</th>
-                        <td>{{ subscription.quote.duration !== 12 ? subscription.quote.duration ~ ' mois': '1 an' }}   {{ subscription.quote.duration == 3 ? ' (reduction: 5%)' : (subscription.quote.duration == 6 ? '(reduction: 10%)' : (subscription.quote.duration == 12 ? '(reduction: 20%)' : ''))}} </td>
-        
-                    </tr>
-        
+                    </tr>      
                 </tbody>
             </table>
         </div>
