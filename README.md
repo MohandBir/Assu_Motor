@@ -1,54 +1,128 @@
 # Assu_Motor
-L'application gère les demande de souscription des assurance automobile de tout types de véhicule.
 
-# Installation du projet Symfony (docker) AssuMotor
+## 📋 Présentation
+
+**Assu_Motor** est une application web développée avec **Symfony** permettant de gérer les demandes de souscription à des assurances automobiles pour différents types de véhicules.
+
+L'application permet de centraliser les demandes de souscription et de faciliter leur gestion dans le cadre du processus d'assurance automobile.
+
+---
+
+# 🐳 Installation du projet Symfony avec Docker
 
 ## Prérequis
-- Docker
-- Docker Compose
+
+Pour installer et exécuter le projet, les éléments suivants sont nécessaires :
+
+* Docker
+* Docker Compose
+* Git
+
+---
 
 ## Conteneurs utilisés
-assuMotor_php
-assuMotor_nginx
-assuMotor_mysql
-assuMotor_phpmyadmin
-assuMotor_mailhog
 
-## Étapes d’installation
+Le projet utilise plusieurs conteneurs Docker afin de séparer les différents services nécessaires au fonctionnement de l'application :
 
-1. Cloner le dépôt
+* **assuMotor_php** : conteneur contenant l'application PHP/Symfony.
+* **assuMotor_nginx** : serveur web Nginx permettant d'accéder à l'application.
+* **assuMotor_mysql** : conteneur contenant la base de données MySQL.
+* **assuMotor_phpmyadmin** : interface permettant d'administrer la base de données MySQL.
+* **assuMotor_mailhog** : service utilisé pour tester les emails envoyés par l'application en environnement de développement.
 
+---
+
+# 🚀 Étapes d'installation
+
+## 1. Cloner le dépôt
+
+Cloner le projet depuis GitHub puis se placer dans le répertoire du projet :
+
+```bash
 git clone https://github.com/MohandBir/Assu_Motor.git
 cd Assu_Motor
+```
 
-2. Démarrer les conteneurs
+## 2. Démarrer les conteneurs
 
-Vérifier que les ports ne sont pas déjà utilisés
+Avant de démarrer le projet, vérifier que les ports utilisés par Docker ne sont pas déjà occupés par d'autres applications.
 
+Construire les images et démarrer les différents conteneurs :
+
+```bash
 docker-compose up -d --build
+```
 
-3. Installer les dépendances Symfony
+Cette commande permet de construire les images nécessaires et de démarrer l'ensemble des services en arrière-plan.
 
+## 3. Installer les dépendances Symfony
+
+Une fois les conteneurs démarrés, installer les dépendances du projet avec Composer :
+
+```bash
 docker exec -it assuMotor_php composer install
+```
 
-4. Configurer l’environnement
-Créer le fichier .env.local :
+## 4. Configurer l'environnement
 
+Créer le fichier `.env.local` à partir du fichier `.env` :
+
+```bash
 cp .env .env.local
-Vérifier la configuration de la base de données :
+```
 
+Vérifier ensuite les différentes variables d'environnement nécessaires au fonctionnement de l'application.
+
+### Base de données
+
+```env
 DATABASE_URL="mysql://user:pwd@mysql:3306/assuMotor?serverVersion=8.0.32&charset=utf8mb4"
+```
+
+### MailHog
+
+```env
 MAILER_DSN=smtp://mailhog:1025
+```
+
+### Messenger
+
+```env
 MESSENGER_TRANSPORT_DSN=sync://
+```
 
-## Commandes utiles
-Accéder au conteneur PHP :
+---
+
+# 🛠️ Commandes utiles
+
+### Accéder au conteneur PHP
+
+```bash
 docker exec -it assuMotor_php sh
-Voir les logs :
+```
+
+Cette commande permet d'ouvrir un terminal directement dans le conteneur PHP.
+
+### Voir les logs
+
+Pour suivre les logs des différents conteneurs :
+
+```bash
 docker-compose logs -f
-Arrêter les conteneurs :
+```
+
+### Arrêter les conteneurs
+
+Pour arrêter et supprimer les conteneurs du projet :
+
+```bash
 docker-compose down
+```
 
+---
 
-## Suivi de projet
-Lien Jira : https://birmoho-1775809868476.atlassian.net/jira/software/projects/PP/boards/34
+# 📌 Suivi du projet
+
+Le suivi des tâches et de l'avancement du projet est réalisé avec Jira.
+
+**Jira :**
